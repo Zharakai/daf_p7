@@ -3,7 +3,9 @@
     <router-link to="/">Home</router-link> |
     <router-link to="/about">About</router-link>
   </div>
+  <!-- eslint-disable -->
   <router-view/>
+  <!-- eslint-enable -->
 </template>
 
 <style lang="scss">
