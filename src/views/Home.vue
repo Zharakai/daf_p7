@@ -1,8 +1,7 @@
 <template>
   <div class="home">
     <img alt="Vue logo" src="../assets/logo.png">
-    <!--<HelloWorld msg="Salut tout le monde !"/>-->
-    <homeMap msg="Test :)"/>
+    <homeMap/>
   </div>
 </template>
 
@@ -16,13 +15,4 @@ export default {
     homeMap,
   },
 };
-
-/*
-export default {
-  name: 'Home',
-  components: {
-    HelloWorld,
-  },
-};
-*/
 </script>
