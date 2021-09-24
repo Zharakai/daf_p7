@@ -33,9 +33,9 @@
   },
   {
     "restaurantName": "Young Min Grill",
-    "address": "110 Impasse Jacquard, 34170 Castelnau-le-Lez",
-    "lat": 43.6365035,
-    "long": 3.9164684,
+    "address": "305 Av. Blaise Pascal, 34170 Castelnau-le-Lez",
+    "lat": 43.642280,
+    "long": 3.919230,
     "ratings": [
       {
         "stars": 5,
@@ -44,6 +44,22 @@
       {
         "stars": 5,
         "comment": "J'ai trouvé ça très bon."
+      }
+    ]
+  },
+  {
+    "restaurantName": "Lorenzo Pizza",
+    "address": "311 Chem. de la Draye du Marbre, 34170 Castelnau-le-Lez",
+    "lat": 43.642280,
+    "long": 3.919230,
+    "ratings": [
+      {
+        "stars": 5,
+        "comment": "Une super pizzeria :)"
+      },
+      {
+        "stars": 5,
+        "comment": "Excellente pizza avec pâte fine et savoureuse."
       }
     ]
   }

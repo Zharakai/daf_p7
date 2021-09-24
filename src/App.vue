@@ -19,10 +19,14 @@ body {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  height: 100vh;
 }
 
 #nav {
-  padding: 30px;
+  padding-top: 30px;
+  width: 350px;
+
+  /* height: 18px; */
 
   a {
     font-weight: bold;
@@ -32,5 +36,14 @@ body {
       color: #42b983;
     }
   }
+}
+
+main {
+  display: flex;
+  height: 100%;
+}
+
+.home {
+  width: calc(100vw - 350px);
 }
 </style>
