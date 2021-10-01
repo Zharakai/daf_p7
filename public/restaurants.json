@@ -62,5 +62,25 @@
         "comment": "Excellente pizza avec pâte fine et savoureuse."
       }
     ]
+  },
+  {
+    "restaurantName": "L'Estaminet",
+    "address": "60 Rte de Nîmes, 34920 Le Crès",
+    "lat": 43.639522552490234,
+    "long": 3.935533285140991,
+    "ratings": [
+      {
+        "stars": 5,
+        "comment": "Nous avons décidé à la dernière minute d'aller déjeuner ici, il n'y a pas eu de soucis pour nous accueillir."
+      },
+      {
+        "stars": 4,
+        "comment": "Très bon restaurant. Tres convivial."
+      },
+      {
+        "stars": 4,
+        "comment": "Restaurant sympa.  Une cuisine raffinée et copieuse."
+      }
+    ]
   }
 ]

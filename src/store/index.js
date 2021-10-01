@@ -1,8 +1,7 @@
 import { createStore } from 'vuex';
-import restaurants from '../restaurants.json';
-// import axios from 'axios';
 
 const currentPosition = {};
+const restaurantsList = [];
 
 function getAddress(lat, lng) {
   currentPosition.lat = lat;
@@ -22,42 +21,23 @@ function getLocation() {
 
 getLocation();
 
-// Fetch appel API
-/*
-console.log(restaurants);
-fetch('../restaurants.json').then(async (response) => {
+fetch('/restaurants.json').then(async (response) => {
   try {
-    const data = await response.json();
-    console.log('response data?', data);
+    const restaurants = await response.json();
+    restaurants.forEach((restaurant) => {
+      restaurantsList.push(restaurant);
+    });
   } catch (error) {
     console.log('Error happened here!');
     console.error(error);
   }
 });
-*/
-/*
-fetch('../src/restaurants.json')
-  .then((res) => res.json())
-  .then((data) => console.log(data));
-*/
-/*
-axios.get('restaurants.json')
-  .then((res) => {
-    console.log(res.data);
-  });
-*/
-/*
-fetch('../restaurants.json')
-  .then((response) => response.json())
-  .then((response) => console.log(JSON.stringify(response)))
-  .catch((error) => alert(`Erreur : ${error}`));
-*/
 
 export default createStore({
   state() {
     return {
       position: currentPosition,
-      restaurants,
+      restaurantsList,
     };
   },
   mutations: {
