@@ -3,10 +3,35 @@
     <div id="nav">
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link>
+      <!--<button @click="vueRestaurants">See Restaurants</button>-->
     </div>
     <router-view/>
   </main>
 </template>
+
+<script>
+export default {
+  setup() {
+
+  },
+  mounted() {
+    // console.log(this.$store.state.restaurantsList);
+  },
+  mutations() {
+    // console.log(this.$store.state);
+  },
+  methods() {
+    // console.log(this.$store.state);
+  },
+  /*
+  methods: {
+    vueRestaurants() {
+      console.log(this.$store.state.restaurantsList);
+    },
+  },
+  */
+};
+</script>
 
 <style lang="scss">
 body {

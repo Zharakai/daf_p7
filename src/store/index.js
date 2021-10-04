@@ -41,6 +41,9 @@ export default createStore({
     };
   },
   mutations: {
+    vueRestaurants() {
+      // console.log(this.restaurantsList);
+    },
   },
   actions: {
   },
