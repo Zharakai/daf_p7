@@ -7,14 +7,18 @@
   >
     <Marker :options="{ position }" />
     <!--<Marker :options="{ position: { lat: 43.739522552490234, lng: 3.935533285140991 } }" />-->
-    <!--<Marker :options="{ position }" v-for="(index) in restaurantsList" :key="index"/>-->
-    <Marker :options="{ position: markerTest }" />
+    <Marker
+      v-for="restaurant in restaurantsList"
+      :key="restaurant.name"
+      :options="{
+      position: { lat: restaurant.lat, lng: restaurant.long } }"/>
+    <!--<Marker :options="{ position: markerTest }" />-->
     <!--<Marker :options="{ position: markerTest2 }" />-->
   </GoogleMap>
 </template>
 
 <script>
-import { defineComponent } from 'vue';
+import { defineComponent, computed } from 'vue';
 import { GoogleMap, Marker } from 'vue3-google-map';
 import { useStore } from 'vuex';
 
@@ -24,20 +28,28 @@ export default defineComponent({
   components: { GoogleMap, Marker },
   setup() {
     const store = useStore();
+    store.dispatch('fetchRestaurants');
     const { position } = store.state; // commit ?
     const markerOptions = { position, label: 'JH', title: 'Just Here' };
-    const markerTest = { lat: 43.639522552490234, lng: 3.935533285140991 }; // Append new Marker
+    // const markerTest = { lat: 43.639522552490234, lng: 3.935533285140991 }; // Append new Marker
     // const markerTest2 = { lat: 43.639522552490234, lng: 3.945533285140991 };
-    const { restaurantsList } = store.state;
-    console.log(restaurantsList);
+    // const { restaurantsList } = store.state;
+    // console.log(restaurantsList);
+
+    const restaurantsList = computed(() => store.state.restaurantsList);
+
     return {
       position,
-      markerTest,
+      // markerTest,
       markerOptions,
+      restaurantsList,
     };
   }, // Add mutations/actions getDatas
   mounted() {
-    console.log(this.$store.state.restaurantsList);
+    // console.log(this.$store.state.restaurantsList);
+    for (let i = 0; i < this.$store.state.restaurantsList.length; i += 1) {
+      console.log(this.$store.state.restaurantsList[i]);
+    }
     /*
     console.log(this.$store.state.restaurantsList[0].lat);
     console.log(this.$store.state.restaurantsList[0].long);

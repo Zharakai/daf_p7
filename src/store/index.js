@@ -1,7 +1,7 @@
-import { createStore } from 'vuex';
+import { createStore, createLogger } from 'vuex';
 
-const currentPosition = {};
-const restaurantsList = [];
+const currentPosition = {}; // mutations + actions
+// const restaurantsList = [];
 
 function getAddress(lat, lng) {
   currentPosition.lat = lat;
@@ -21,32 +21,36 @@ function getLocation() {
 
 getLocation();
 
-fetch('/restaurants.json').then(async (response) => {
-  try {
-    const restaurants = await response.json();
-    restaurants.forEach((restaurant) => {
-      restaurantsList.push(restaurant);
-    });
-  } catch (error) {
-    console.log('Error happened here!');
-    console.error(error);
-  }
-});
-
 export default createStore({
   state() {
     return {
       position: currentPosition,
-      restaurantsList,
+      restaurantsList: [],
     };
   },
   mutations: {
-    vueRestaurants() {
-      // console.log(this.restaurantsList);
+    ADD_RESTAURANT(state, newRestaurant) {
+      state.restaurantsList.push(newRestaurant);
     },
   },
+  // action fetch restaurants
   actions: {
+    fetchRestaurants({ commit }) {
+      fetch('/restaurants.json').then(async (response) => {
+        try {
+          const restaurants = await response.json();
+          restaurants.forEach((restaurant) => {
+            // find restaurantsList to check if restaurant exist
+            commit('ADD_RESTAURANT', restaurant);
+          });
+        } catch (error) {
+          console.log('Error happened here!');
+          console.error(error);
+        }
+      });
+    },
   },
   modules: {
   },
+  plugins: [createLogger()],
 });
