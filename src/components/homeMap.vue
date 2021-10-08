@@ -6,14 +6,11 @@
     :zoom="11"
   >
     <Marker :options="{ position }" />
-    <!--<Marker :options="{ position: { lat: 43.739522552490234, lng: 3.935533285140991 } }" />-->
     <Marker
       v-for="restaurant in restaurantsList"
       :key="restaurant.name"
       :options="{
       position: { lat: restaurant.lat, lng: restaurant.long } }"/>
-    <!--<Marker :options="{ position: markerTest }" />-->
-    <!--<Marker :options="{ position: markerTest2 }" />-->
   </GoogleMap>
 </template>
 
@@ -22,54 +19,30 @@ import { defineComponent, computed } from 'vue';
 import { GoogleMap, Marker } from 'vue3-google-map';
 import { useStore } from 'vuex';
 
-// const test = 'coucouTest';
-
 export default defineComponent({
   components: { GoogleMap, Marker },
   setup() {
     const store = useStore();
-    store.dispatch('fetchRestaurants');
-    const { position } = store.state; // commit ?
-    const markerOptions = { position, label: 'JH', title: 'Just Here' };
-    // const markerTest = { lat: 43.639522552490234, lng: 3.935533285140991 }; // Append new Marker
-    // const markerTest2 = { lat: 43.639522552490234, lng: 3.945533285140991 };
-    // const { restaurantsList } = store.state;
-    // console.log(restaurantsList);
 
+    store.dispatch('getLocation');
+    const position = computed(() => store.state.position);
+
+    store.dispatch('fetchRestaurants');
     const restaurantsList = computed(() => store.state.restaurantsList);
+
+    const markerOptions = { position, label: 'JH', title: 'Just Here' };
 
     return {
       position,
-      // markerTest,
       markerOptions,
       restaurantsList,
     };
   }, // Add mutations/actions getDatas
   mounted() {
-    // console.log(this.$store.state.restaurantsList);
-    for (let i = 0; i < this.$store.state.restaurantsList.length; i += 1) {
-      console.log(this.$store.state.restaurantsList[i]);
-    }
-    /*
-    console.log(this.$store.state.restaurantsList[0].lat);
-    console.log(this.$store.state.restaurantsList[0].long);
-    const markerTest2 = {
-      lat: this.$store.state.restaurantsList[4].lat,
-      lng: this.$store.state.restaurantsList[4].long,
-    };
-    */
-    // console.log(this.$el);
-    // console.log(test);
-    // return { markerTest2 };
   },
   methods: {
   },
-  /*
   mutations: {
-    test() {
-      return console.log('this.$store');
-    },
   },
-  */
 });
 </script>

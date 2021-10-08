@@ -1,46 +1,46 @@
 import { createStore, createLogger } from 'vuex';
 
-const currentPosition = {}; // mutations + actions
-// const restaurantsList = [];
-
-function getAddress(lat, lng) {
-  currentPosition.lat = lat;
-  currentPosition.lng = lng;
-}
-
-function getLocation() {
-  navigator.geolocation.getCurrentPosition(
-    (position) => {
-      getAddress(position.coords.latitude, position.coords.longitude);
-    },
-    (error) => {
-      console.log(error.message);
-    },
-  );
-}
-
-getLocation();
-
 export default createStore({
   state() {
     return {
-      position: currentPosition,
+      position: { lat: 0, lng: 0 },
       restaurantsList: [],
     };
   },
+
   mutations: {
+    GET_POSITION(state, pos) {
+      // eslint-disable-next-line no-param-reassign
+      state.position = pos;
+    },
+
     ADD_RESTAURANT(state, newRestaurant) {
       state.restaurantsList.push(newRestaurant);
     },
   },
-  // action fetch restaurants
+
   actions: {
+    getLocation({ commit }) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const pos = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          };
+          commit('GET_POSITION', pos);
+        },
+        (error) => {
+          console.log(error.message);
+        },
+      );
+    },
+
     fetchRestaurants({ commit }) {
       fetch('/restaurants.json').then(async (response) => {
         try {
           const restaurants = await response.json();
           restaurants.forEach((restaurant) => {
-            // find restaurantsList to check if restaurant exist
+            // find() restaurantsList to check if restaurant exist
             commit('ADD_RESTAURANT', restaurant);
           });
         } catch (error) {
@@ -50,7 +50,6 @@ export default createStore({
       });
     },
   },
-  modules: {
-  },
+
   plugins: [createLogger()],
 });
