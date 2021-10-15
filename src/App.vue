@@ -3,16 +3,35 @@
     <div id="nav">
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link>
-      <!--<button @click="vueRestaurants">See Restaurants</button>-->
+      <div class="restaurantsNav">
+        <ul>
+          <li
+            v-for="restaurant in restaurantsList"
+            :key="restaurant.restaurantName">
+            <div>
+              <p>{{ restaurant.restaurantName }}</p>
+            </div>
+          </li>
+        </ul>
+      </div>
     </div>
     <router-view/>
   </main>
 </template>
 
 <script>
+import { useStore } from 'vuex';
+
 export default {
   setup() {
+    const store = useStore();
+    const { restaurantsList } = store.state;
 
+    console.log(restaurantsList);
+
+    return {
+      restaurantsList,
+    };
   },
   mounted() {
     // console.log(this.$store.state.restaurantsList);
