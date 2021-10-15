@@ -1,16 +1,24 @@
 <template>
   <main>
     <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+      <div class="navMenu">
+        <router-link to="/">Home</router-link> |
+        <router-link to="/about">About</router-link>
+      </div>
       <div class="restaurantsNav">
         <ul>
           <li
             v-for="restaurant in restaurantsList"
             :key="restaurant.restaurantName">
-            <div>
-              <p>{{ restaurant.restaurantName }}</p>
-            </div>
+            <a href="#">
+              <div>
+                <p>{{ restaurant.restaurantName }}</p>
+                <!-- eslint-disable-next-line max-len -->
+                <!--<p v-for="(sub, index) in restaurant" :key="index">{{ sub.ratings[index] }}</p>-->
+                <p>{{ restaurant.ratings }}</p>
+                <p>{{ restaurant.address }}</p>
+              </div>
+            </a>
           </li>
         </ul>
       </div>
@@ -26,6 +34,18 @@ export default {
   setup() {
     const store = useStore();
     const { restaurantsList } = store.state;
+
+    restaurantsList.forEach((restaurant, i) => {
+      // eslint-disable-next-line no-param-reassign
+      // restaurant.averageArray = [];
+      const average = 'test';
+      restaurant.ratings.forEach((rating) => {
+        // restaurant.averageArray.push(rating.stars);
+        // const average
+        console.log(average, i);
+        console.log(rating.stars);
+      });
+    });
 
     console.log(restaurantsList);
 
@@ -69,8 +89,7 @@ body {
 #nav {
   padding-top: 30px;
   width: 350px;
-
-  /* height: 18px; */
+  overflow: auto;
 
   a {
     font-weight: bold;
@@ -78,6 +97,30 @@ body {
 
     &.router-link-exact-active {
       color: #42b983;
+    }
+  }
+
+  ul {
+    padding: 0;
+  }
+
+  li {
+    list-style: none;
+    &:hover {
+        background: #9ea93f1f
+      }
+
+    a {
+      text-decoration: none;
+      font-weight: normal;
+
+      div {
+        padding: 5px;
+      }
+    }
+
+    p {
+      text-align: left;
     }
   }
 }
