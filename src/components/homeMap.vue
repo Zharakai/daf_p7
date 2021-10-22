@@ -3,9 +3,10 @@
     api-key="AIzaSyAQvcg7ps3Ca2wFlXQnHIFKbRgWwgOwRvU"
     style="width: 100%; height: 100vh;"
     :center="position"
-    :zoom="11"
-  >
-    <Marker :options="{ position }" />
+    :zoom="11">
+    <Marker
+      :options="{ position }"
+      icon="http://maps.google.com/mapfiles/ms/icons/blue-dot.png"/>
     <Marker
       v-for="restaurant in restaurantsList"
       :key="restaurant.name"
@@ -37,12 +38,6 @@ export default defineComponent({
       markerOptions,
       restaurantsList,
     };
-  }, // Add mutations/actions getDatas
-  mounted() {
-  },
-  methods: {
-  },
-  mutations: {
   },
 });
 </script>

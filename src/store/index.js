@@ -35,23 +35,20 @@ export default createStore({
       );
     },
 
-    fetchRestaurants({ commit, state }) {
-      // then to await (1 try catch)
-      fetch('/restaurants.json').then(async (response) => {
-        try {
-          const newRestaurants = await response.json();
-          newRestaurants.forEach((newRestaurant) => {
-            // eslint-disable-next-line max-len
-            const restaurantExist = state.restaurantsList.find((restaurant) => restaurant.restaurantName === newRestaurant.restaurantName);
-            if (!restaurantExist) {
-              commit('ADD_RESTAURANT', newRestaurant);
-            }
-          });
-        } catch (error) {
-          console.log('Error happened here!');
-          console.error(error);
-        }
-      });
+    async fetchRestaurants({ commit, state }) {
+      try {
+        const response = await fetch('/restaurants.json');
+        const newRestaurants = await response.json();
+        newRestaurants.forEach((newRestaurant) => {
+          // eslint-disable-next-line max-len
+          const restaurantExist = state.restaurantsList.find((restaurant) => restaurant.restaurantName === newRestaurant.restaurantName);
+          if (!restaurantExist) {
+            commit('ADD_RESTAURANT', newRestaurant);
+          }
+        });
+      } catch (error) {
+        console.error(error);
+      }
     },
   },
 

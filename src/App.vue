@@ -6,6 +6,14 @@
         <router-link to="/about">About</router-link>
       </div>
       <div class="restaurantsNav">
+        <label for="ratingsFilter">Filtre par notes</label>
+        <select name="filter" id="ratingsFilter">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+        </select>
         <ul>
           <li
             v-for="restaurant in restaurantsList"
@@ -15,7 +23,8 @@
                 <p>{{ restaurant.restaurantName }}</p>
                 <!-- eslint-disable-next-line max-len -->
                 <!--<p v-for="(sub, index) in restaurant" :key="index">{{ sub.ratings[index] }}</p>-->
-                <p>{{ restaurant.ratings }}</p>
+                <!--<p>{{ restaurant.ratings }}</p>-->
+                <p>{{ averageRating }}</p>
                 <p>{{ restaurant.address }}</p>
               </div>
             </a>
@@ -30,11 +39,50 @@
 <script>
 import { useStore } from 'vuex';
 
+/*
+function getAverageRating() {
+  const store = useStore();
+  const { restaurantsList } = store.state;
+  console.log(restaurantsList[0].ratings[0].stars);
+}
+*/
+
 export default {
   setup() {
     const store = useStore();
     const { restaurantsList } = store.state;
 
+    // getAverageRating();
+
+    function getAverageRating() {
+      const ratings = [];
+      restaurantsList.forEach((restaurant) => {
+        const restaurantRatings = [];
+        // console.log(restaurant.ratings.length);
+        restaurant.ratings.forEach((rating) => {
+          // console.log(rating);
+          // console.log('Ratings ', i, ' -> ', rating.stars);
+          restaurantRatings.push(rating.stars);
+          // ratings.push(averageRating);
+          /*
+          if (i === i - 1) {
+            console.log(rating.stars);
+          }
+          */
+        });
+
+        ratings.push(restaurantRatings);
+      });
+      // console.log(ratings);
+      // console.log(ratings.length);
+      ratings.forEach((rating) => {
+        console.log(rating.reduce((a, b) => a + b) / rating.length);
+      });
+    }
+
+    console.log('yep');
+
+    /*
     restaurantsList.forEach((restaurant, i) => {
       // eslint-disable-next-line no-param-reassign
       // restaurant.averageArray = [];
@@ -46,12 +94,13 @@ export default {
         console.log(rating.stars);
       });
     });
+    */
 
-    console.log(restaurantsList);
+    // console.log(restaurantsList);
 
-    return {
-      restaurantsList,
-    };
+    const averageRating = getAverageRating();
+
+    return { restaurantsList, averageRating };
   },
   mounted() {
     // console.log(this.$store.state.restaurantsList);
@@ -59,16 +108,9 @@ export default {
   mutations() {
     // console.log(this.$store.state);
   },
-  methods() {
-    // console.log(this.$store.state);
-  },
-  /*
   methods: {
-    vueRestaurants() {
-      console.log(this.$store.state.restaurantsList);
-    },
+    // Ratings [] => moyenne
   },
-  */
 };
 </script>
 
@@ -121,6 +163,14 @@ body {
 
     p {
       text-align: left;
+    }
+  }
+
+  .restaurantsNav {
+    margin: 16px 0 0 0;
+
+    select {
+      margin: 0 0 0 5px;
     }
   }
 }
