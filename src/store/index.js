@@ -17,6 +17,19 @@ export default createStore({
     ADD_RESTAURANT(state, newRestaurant) {
       state.restaurantsList.push(newRestaurant);
     },
+
+    /*
+    ADD_AVERAGE_RATING(state, average) {
+      // eslint-disable-next-line no-param-reassign
+      state.averageRating = average;
+    },
+    */
+
+    /*
+    ADD_AVERAGE_RATING(restaurant, average) {
+      console.log(restaurant, average);
+    },
+    */
   },
 
   actions: {
@@ -50,6 +63,15 @@ export default createStore({
         console.error(error);
       }
     },
+
+    /*
+    getAverageRating({ commit }) {
+      // console.log(state.restaurantsList);
+      commit('ADD_AVERAGE_RATING', 0);
+      // state.restaurantsList.forEach((restaurant) => console.log(restaurant))
+    },
+    */
+
   },
 
   plugins: [createLogger()],

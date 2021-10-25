@@ -8,23 +8,22 @@
       <div class="restaurantsNav">
         <label for="ratingsFilter">Filtre par notes</label>
         <select name="filter" id="ratingsFilter">
-          <option value="1">1</option>
           <option value="2">2</option>
+          <option value="2.5">2.5</option>
           <option value="3">3</option>
+          <option value="3.5">3.5</option>
           <option value="4">4</option>
-          <option value="5">5</option>
+          <option value="4.5">4.5</option>
         </select>
         <ul>
           <li
-            v-for="restaurant in restaurantsList"
+            v-for="(restaurant, index) in restaurantsList"
             :key="restaurant.restaurantName">
             <a href="#">
               <div>
                 <p>{{ restaurant.restaurantName }}</p>
-                <!-- eslint-disable-next-line max-len -->
-                <!--<p v-for="(sub, index) in restaurant" :key="index">{{ sub.ratings[index] }}</p>-->
-                <!--<p>{{ restaurant.ratings }}</p>-->
-                <p>{{ averageRating }}</p>
+                <p>{{ averageRating[index] }}</p>
+                <!--<p>{{ restaurant.average }}</p>-->
                 <p>{{ restaurant.address }}</p>
               </div>
             </a>
@@ -37,6 +36,7 @@
 </template>
 
 <script>
+// import { computed } from 'vue';
 import { useStore } from 'vuex';
 
 /*
@@ -47,16 +47,53 @@ function getAverageRating() {
 }
 */
 
+/*
+function getAverageRating() {
+  const store = useStore();
+  const { restaurantsList } = store.state;
+  const ratings = [];
+  const averageRating = [];
+  restaurantsList.forEach((restaurant) => {
+    // eslint-disable-next-line no-param-reassign
+    restaurant.average = 0;
+    console.log(restaurant);
+    const restaurantRatings = [];
+    // console.log(restaurant.ratings.length);
+    restaurant.ratings.forEach((rating) => {
+    // console.log(rating);
+    // console.log('Ratings ', i, ' -> ', rating.stars);
+      restaurantRatings.push(rating.stars);
+    // ratings.push(averageRating);
+    });
+
+    ratings.push(restaurantRatings);
+  });
+  // console.log(ratings);
+  // console.log(ratings.length);
+  ratings.forEach((rating) => {
+    averageRating.push(Math.round((rating.reduce((a, b) => a + b) / rating.length) * 10) / 10);
+  });
+  console.log(averageRating);
+}
+*/
+
 export default {
   setup() {
     const store = useStore();
     const { restaurantsList } = store.state;
-
+    const averageRating = [];
     // getAverageRating();
+
+    // store.dispatch('getAverageRating');
+    // const average = computed(() => store.state.restaurantsList);
+    // console.log(average);
+    console.log(store.state.restaurantsList);
 
     function getAverageRating() {
       const ratings = [];
       restaurantsList.forEach((restaurant) => {
+        // eslint-disable-next-line no-param-reassign
+        // restaurant.average = 0;
         const restaurantRatings = [];
         // console.log(restaurant.ratings.length);
         restaurant.ratings.forEach((rating) => {
@@ -64,6 +101,7 @@ export default {
           // console.log('Ratings ', i, ' -> ', rating.stars);
           restaurantRatings.push(rating.stars);
           // ratings.push(averageRating);
+
           /*
           if (i === i - 1) {
             console.log(rating.stars);
@@ -76,11 +114,22 @@ export default {
       // console.log(ratings);
       // console.log(ratings.length);
       ratings.forEach((rating) => {
-        console.log(rating.reduce((a, b) => a + b) / rating.length);
+        averageRating.push(Math.round((rating.reduce((a, b) => a + b) / rating.length) * 10) / 10);
       });
+      console.log(averageRating);
     }
 
-    console.log('yep');
+    /*
+    restaurantsList.forEach((restaurant) => {
+      // eslint-disable-next-line no-param-reassign
+      restaurant.average = 0;
+    });
+    */
+
+    getAverageRating();
+    console.log('yepa');
+    console.log(averageRating);
+    // console.log(store.state.restaurantsList);
 
     /*
     restaurantsList.forEach((restaurant, i) => {
@@ -98,7 +147,7 @@ export default {
 
     // console.log(restaurantsList);
 
-    const averageRating = getAverageRating();
+    // const averageRating = getAverageRating();
 
     return { restaurantsList, averageRating };
   },
