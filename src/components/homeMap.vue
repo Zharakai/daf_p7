@@ -10,8 +10,8 @@
     <Marker
       v-for="restaurant in restaurantsList"
       :key="restaurant.name"
-      :options="{
-      position: { lat: restaurant.lat, lng: restaurant.long } }"/>
+      :options="{ position: { lat: restaurant.lat, lng: restaurant.long } }"
+    />
   </GoogleMap>
 </template>
 

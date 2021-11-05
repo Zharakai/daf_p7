@@ -18,12 +18,12 @@
         </select>
         <ul>
           <li
-            v-for="(restaurant, index) in restaurantsList"
+            v-for="restaurant in restaurantsList"
             :key="restaurant.restaurantName">
             <a href="#" v-on:click="toggle">
               <div v-on:click="showRestaurant">
                 <p>{{ restaurant.restaurantName }}</p>
-                <p>{{ averageRating[index] }}</p>
+                <p>{{ getAverageRating(restaurant.ratings) }}</p>
                 <p>{{ restaurant.address }}</p>
               </div>
             </a>
@@ -32,6 +32,13 @@
       </div>
       <div class="selectedRestaurant hidden">
         <p class="back" v-on:click="toggle" aria-label="Retour" title="Retour"></p>
+        <div>
+          <p>img</p>
+          <p>restaurantName</p>
+          <p>averageRating</p>
+          <p>address</p>
+          <p>comments</p>
+        </div>
       </div>
     </div>
     <router-view/>
@@ -40,37 +47,6 @@
 
 <script>
 import { useStore } from 'vuex';
-// import { computed } from 'vue';
-
-/*
-function getAverageRating() {
-  const store = useStore();
-  const { restaurantsList } = store.state;
-  const ratings = [];
-  const averageRating = [];
-  restaurantsList.forEach((restaurant) => {
-    // eslint-disable-next-line no-param-reassign
-    restaurant.average = 0;
-    console.log(restaurant);
-    const restaurantRatings = [];
-    // console.log(restaurant.ratings.length);
-    restaurant.ratings.forEach((rating) => {
-    // console.log(rating);
-    // console.log('Ratings ', i, ' -> ', rating.stars);
-      restaurantRatings.push(rating.stars);
-    // ratings.push(averageRating);
-    });
-
-    ratings.push(restaurantRatings);
-  });
-  // console.log(ratings);
-  // console.log(ratings.length);
-  ratings.forEach((rating) => {
-    averageRating.push(Math.round((rating.reduce((a, b) => a + b) / rating.length) * 10) / 10);
-  });
-  console.log(averageRating);
-}
-*/
 
 function toggle() {
   const selectedRestaurant = document.getElementsByClassName('selectedRestaurant');
@@ -82,96 +58,26 @@ function toggle() {
 
 function showRestaurant(event) {
   console.log(event.target.parentElement);
+  console.log(event.target.parentElement.firstChild);
 }
 
 export default {
   setup() {
     const store = useStore();
-    console.log(store);
     const { restaurantsList } = store.state;
-    const averageRating = [];
 
-    // getAverageRating();
-
-    // store.dispatch('getAverageRating');
-    // const average = computed(() => store.state.restaurantsList);
-    // console.log(average);
-    // console.log(restaurantsList);
-
-    function getAverageRating() {
-      const ratings = [];
-      restaurantsList.forEach((restaurant) => {
-        // eslint-disable-next-line no-param-reassign
-        restaurant.average = 0;
-        const restaurantRatings = [];
-        // console.log(restaurant.ratings.length);
-        restaurant.ratings.forEach((rating) => {
-          // console.log(rating);
-          // console.log('Ratings ', i, ' -> ', rating.stars);
-          restaurantRatings.push(rating.stars);
-          // ratings.push(averageRating);
-        });
-
-        ratings.push(restaurantRatings);
-      });
-      // console.log(ratings);
-      // console.log(ratings.length);
-      ratings.forEach((rating) => {
-        averageRating.push(Math.round((rating.reduce((a, b) => a + b) / rating.length) * 10) / 10);
-      });
-      // console.log(averageRating);
+    // TODO : comment
+    function getAverageRating(ratings) {
+      const flatRatings = ratings.map((rating) => rating.stars);
+      return Math.round((flatRatings.reduce((a, b) => a + b) / ratings.length) * 10) / 10;
     }
-
-    /*
-    restaurantsList.forEach((restaurant) => {
-      // eslint-disable-next-line no-param-reassign
-      restaurant.average = 0;
-    });
-    */
-
-    getAverageRating();
-    console.log('yepah', restaurantsList);
-    // console.log(averageRating);
-    // console.log(store.state.restaurantsList);
-
-    /* function test() {
-      const element = document.getElementsByClassName('selectedRestaurant');
-      element.classList.toggle('visible');
-    } */
-
-    /*
-    restaurantsList.forEach((restaurant, i) => {
-      // eslint-disable-next-line no-param-reassign
-      // restaurant.averageArray = [];
-      const average = 'test';
-      restaurant.ratings.forEach((rating) => {
-        // restaurant.averageArray.push(rating.stars);
-        // const average
-        console.log(average, i);
-        console.log(rating.stars);
-      });
-    });
-    */
-
-    // console.log(restaurantsList);
-
-    // const averageRating = getAverageRating();
 
     return {
       restaurantsList,
-      averageRating,
+      getAverageRating,
       toggle,
       showRestaurant,
     };
-  },
-  mounted() {
-    // console.log(this.$store.state.restaurantsList);
-  },
-  mutations() {
-    // console.log(this.$store.state);
-  },
-  methods: {
-    // Ratings [] => moyenne
   },
 };
 </script>
