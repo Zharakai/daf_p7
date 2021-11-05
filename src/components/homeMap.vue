@@ -24,7 +24,6 @@ export default defineComponent({
   components: { GoogleMap, Marker },
   setup() {
     const store = useStore();
-    console.log(store);
 
     store.dispatch('getLocation');
     const position = computed(() => store.state.position);
