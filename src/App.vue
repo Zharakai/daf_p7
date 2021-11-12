@@ -1,67 +1,31 @@
 <template>
   <main>
-    <div id="nav">
-      <div class="navMenu">
-        <router-link to="/">Home</router-link> |
-        <router-link to="/about">About</router-link>
-      </div>
-      <div class="restaurantsNav">
-        <label for="ratingsFilter">Filtre par notes</label>
-        <select name="filter" id="ratingsFilter">
-          <option value="allRatings">Toutes les notes</option>
-          <option value="2">2</option>
-          <option value="2.5">2.5</option>
-          <option value="3">3</option>
-          <option value="3.5">3.5</option>
-          <option value="4">4</option>
-          <option value="4.5">4.5</option>
-        </select>
-        <ul>
-          <li
-            v-for="restaurant in restaurantsList"
-            :key="restaurant.restaurantName">
-            <a href="#" v-on:click="toggle">
-              <div v-on:click="showRestaurant">
-                <p>{{ restaurant.restaurantName }}</p>
-                <p>{{ getAverageRating(restaurant.ratings) }}</p>
-                <p>{{ restaurant.address }}</p>
-              </div>
-            </a>
-          </li>
-        </ul>
-      </div>
-      <div class="selectedRestaurant hidden">
-        <p class="back" v-on:click="toggle" aria-label="Retour" title="Retour"></p>
-        <div>
-          <p>img</p>
-          <p>restaurantName</p>
-          <p>averageRating</p>
-          <p>address</p>
-          <p>comments</p>
-        </div>
-      </div>
-    </div>
     <router-view/>
+    <Home/>
   </main>
 </template>
 
 <script>
 import { useStore } from 'vuex';
+import Home from './views/Home.vue';
 
+/*
 function toggle() {
   const selectedRestaurant = document.getElementsByClassName('selectedRestaurant');
   const restaurants = document.getElementsByClassName('restaurantsNav');
   selectedRestaurant[0].classList.toggle('visible');
   restaurants[0].classList.toggle('hidden');
-  console.log(restaurants);
+  console.log('clickOnLink');
 }
 
 function showRestaurant(event) {
   console.log(event.target.parentElement);
-  console.log(event.target.parentElement.firstChild);
+  // console.log(event.target.parentElement.firstChild);
 }
+*/
 
 export default {
+  components: { Home },
   setup() {
     const store = useStore();
     const { restaurantsList } = store.state;
@@ -76,8 +40,8 @@ export default {
     return {
       restaurantsList,
       getAverageRating,
-      toggle,
-      showRestaurant,
+      // toggle,
+      // showRestaurant,
     };
   },
 };
@@ -149,20 +113,6 @@ body {
 
   .visible {
     display: block;
-  }
-
-  .back {
-    width: fit-content;
-
-    &:hover {
-      cursor: pointer;
-      color: #42b983;
-    }
-
-    &::before {
-    content: '\1F810';
-    font-size: 3rem;
-  }
   }
 }
 
