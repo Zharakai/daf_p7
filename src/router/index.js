@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router';
-// import Home from '../views/Home.vue';
 import HomeNav from '../views/HomeNav.vue';
 import Restaurant from '../views/Restaurant.vue';
 

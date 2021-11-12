@@ -9,21 +9,6 @@
 import { useStore } from 'vuex';
 import Home from './views/Home.vue';
 
-/*
-function toggle() {
-  const selectedRestaurant = document.getElementsByClassName('selectedRestaurant');
-  const restaurants = document.getElementsByClassName('restaurantsNav');
-  selectedRestaurant[0].classList.toggle('visible');
-  restaurants[0].classList.toggle('hidden');
-  console.log('clickOnLink');
-}
-
-function showRestaurant(event) {
-  console.log(event.target.parentElement);
-  // console.log(event.target.parentElement.firstChild);
-}
-*/
-
 export default {
   components: { Home },
   setup() {
@@ -40,8 +25,6 @@ export default {
     return {
       restaurantsList,
       getAverageRating,
-      // toggle,
-      // showRestaurant,
     };
   },
 };
