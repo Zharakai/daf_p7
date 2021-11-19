@@ -15,16 +15,8 @@ export default {
     const store = useStore();
     const { restaurantsList } = store.state;
 
-    function getAverageRating(ratings) {
-      // Create an array for each restaurant with their ratings
-      const flatRatings = ratings.map((rating) => rating.stars);
-      // Take each array previously created to return the average with one decimal
-      return Math.round((flatRatings.reduce((a, b) => a + b) / ratings.length) * 10) / 10;
-    }
-
     return {
       restaurantsList,
-      getAverageRating,
     };
   },
 };

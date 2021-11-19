@@ -35,6 +35,10 @@ export default createStore({
       );
     },
 
+    getRestaurantByName({ state }, name) {
+      return state.restaurantsList.find((restaurant) => restaurant.restaurantName === name);
+    },
+
     async fetchRestaurants({ commit, state }) {
       try {
         const response = await fetch('/restaurants.json');
@@ -51,6 +55,4 @@ export default createStore({
       }
     },
   },
-
-  // plugins: [createLogger()],
 });

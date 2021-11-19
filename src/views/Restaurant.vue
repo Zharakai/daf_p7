@@ -2,42 +2,45 @@
   <div class="selectedRestaurant">
     <router-link to="/" class="back" aria-label="Retour" title="Retour"></router-link>
     <div>
-        <p>img</p>
-        <!--<p>{{ restaurant.restaurantName }}</p>-->
-        <p>{{ restaurantClicked }}</p>
+        <img :src="`https://maps.googleapis.com/maps/api/streetview?size=350x175&location=${lat},${long}&heading=151.78&pitch=-0.76&key=AIzaSyAQvcg7ps3Ca2wFlXQnHIFKbRgWwgOwRvU`">
+        <h1>{{ restaurantName }}</h1>
         <p>averageRating</p>
-        <p>address</p>
-        <p>comments</p>
+        <p>{{ address }}</p>
+        <p v-for="rating in ratings" :key="rating.comment">
+          {{ rating.stars}}/5 <br>
+          {{ rating.comment }}
+        </p>
     </div>
   </div>
 </template>
 
 <script>
+import { reactive, toRefs } from 'vue';
 import { useStore } from 'vuex';
+import { useRoute } from 'vue-router';
 
 export default ({
   setup() {
     const store = useStore();
-    const { restaurantClicked } = store.state;
-    const { restaurantsList } = store.state;
-    // let restaurantChosen;
+    const route = useRoute();
 
-    // console.log(restaurantClicked);
-
-    /*
-    const store = useStore();
-    const { restaurantsList } = store.state;
-    */
-    restaurantsList.forEach((element) => {
-      if (element.restaurantName === restaurantClicked) {
-        // restaurantChosen = element;
-        store.state.restaurantChosen = element;
-      }
+    const state = reactive({
+      restaurantName: '',
+      address: '',
+      ratings: [],
+      lat: '',
+      long: '',
     });
 
-    console.log(store.state.restaurantChosen);
+    store.dispatch('getRestaurantByName', route.params.id).then((restaurant) => {
+      state.restaurantName = restaurant.restaurantName;
+      state.address = restaurant.address;
+      state.ratings = restaurant.ratings;
+      state.lat = restaurant.lat;
+      state.long = restaurant.long;
+    });
 
-    return { restaurantClicked };
+    return toRefs(state);
   },
 });
 </script>
@@ -51,6 +54,18 @@ export default ({
   a {
     text-decoration: none;
     display: flex;
+  }
+
+  div {
+    text-align: left;
+
+    h1 {
+      font-size: 1.375rem
+    }
+
+    h1, p {
+      padding: 5px;
+    }
   }
 }
 
@@ -66,5 +81,5 @@ export default ({
     content: '\1F810';
     font-size: 3rem;
   }
-  }
+}
 </style>

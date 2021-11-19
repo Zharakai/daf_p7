@@ -16,9 +16,7 @@
         <li
           v-for="restaurant in restaurantsList"
           :key="restaurant.restaurantName">
-          <router-link
-            @click="getRestaurantName(restaurant.restaurantName)"
-            :to="{ name: 'Restaurant', params: { id: restaurant.restaurantName }}">
+          <router-link :to="{ name: 'Restaurant', params: { id: restaurant.restaurantName }}">
             <div>
               <p>{{ restaurant.restaurantName }}</p>
               <p>{{ getAverageRating(restaurant.ratings) }}</p>
@@ -38,6 +36,7 @@ export default {
   setup() {
     const store = useStore();
     const { restaurantsList } = store.state;
+
     function getAverageRating(ratings) {
       // Create an array for each restaurant with their ratings
       const flatRatings = ratings.map((rating) => rating.stars);
@@ -45,17 +44,9 @@ export default {
       return Math.round((flatRatings.reduce((a, b) => a + b) / ratings.length) * 10) / 10;
     }
 
-    function getRestaurantName(name) {
-      const restaurantClicked = name;
-      store.state.restaurantClicked = restaurantClicked;
-      // console.log(restaurantName);
-    }
-
     return {
       restaurantsList,
       getAverageRating,
-      getRestaurantName,
-      // restaurantName,
     };
   },
 };
