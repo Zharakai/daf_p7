@@ -4,7 +4,7 @@
     <div>
         <img :src="`https://maps.googleapis.com/maps/api/streetview?size=350x175&location=${lat},${long}&heading=151.78&pitch=-0.76&key=AIzaSyAQvcg7ps3Ca2wFlXQnHIFKbRgWwgOwRvU`">
         <h1>{{ restaurantName }}</h1>
-        <p>averageRating</p>
+        <p>{{ average }}</p>
         <p>{{ address }}</p>
         <p v-for="rating in ratings" :key="rating.comment">
           {{ rating.stars}}/5 <br>
@@ -18,6 +18,12 @@
 import { reactive, toRefs } from 'vue';
 import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
+// import getAverageRating from './HomeNav.vue';
+
+function getAverageRating(ratings) {
+  const flatRatings = ratings.map((rating) => rating.stars);
+  return Math.round((flatRatings.reduce((a, b) => a + b) / ratings.length) * 10) / 10;
+}
 
 export default ({
   setup() {
@@ -28,6 +34,7 @@ export default ({
       restaurantName: '',
       address: '',
       ratings: [],
+      average: 0,
       lat: '',
       long: '',
     });
@@ -38,6 +45,7 @@ export default ({
       state.ratings = restaurant.ratings;
       state.lat = restaurant.lat;
       state.long = restaurant.long;
+      state.average = getAverageRating(restaurant.ratings);
     });
 
     return toRefs(state);
