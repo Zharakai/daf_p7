@@ -22,7 +22,6 @@ export default {
 };
 </script>
 
-// TODO : - Afficher uniquement les restaurants de la zone
 // TODO : - Couleur spécifique pour le marqueur de la position utilisateur
 
 <style lang="scss">
