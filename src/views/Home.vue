@@ -1,3 +1,4 @@
+// TODO: Move homeMap here
 <template>
   <div class="home">
     <homeMap/>

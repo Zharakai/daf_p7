@@ -28,8 +28,9 @@ export default defineComponent({
     store.dispatch('getLocation');
     const position = computed(() => store.state.position);
 
-    store.dispatch('fetchRestaurants');
-    const restaurantsList = computed(() => store.state.restaurantsList);
+    // Test emit move map
+    store.dispatch('fetchRestaurants'); // Props
+    const restaurantsList = computed(() => store.state.restaurantsList); // Props
 
     const markerOptions = { position, label: 'JH', title: 'Just Here' };
 

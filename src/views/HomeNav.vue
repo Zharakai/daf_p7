@@ -9,7 +9,6 @@
         <input type="range" v-model.number="maxRate" :min="minRate" max="5" list="range">-->
         <input
           class="inputMin"
-          @change="doTest"
           type="number"
           v-model.number="minRate"
           min="0"
@@ -19,7 +18,6 @@
         <input
           ref="uniqueName"
           class="inputMax"
-          @change="doTest"
           type="number"
           v-model.number="maxRate"
           :min="minRate"
@@ -38,7 +36,7 @@
 
       <ul>
         <li
-          v-for="restaurant in restaurantsList"
+          v-for="restaurant in restaurantsFiltered"
           :key="restaurant.restaurantName">
           <router-link :to="{ name: 'Restaurant', params: { id: restaurant.restaurantName }}">
             <div>
@@ -55,14 +53,14 @@
 
 <script>
 import { useStore } from 'vuex';
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 // import VueRangeSlider from 'vue-range-component';
 
 export default {
   setup() {
     const store = useStore();
     const { restaurantsList } = store.state;
-    let restaurantsFiltered;
+    // let restaurantsFiltered = restaurantsList;
     const minRate = ref(0);
     const maxRate = ref(5);
     // console.log(VueRangeSlider);
@@ -74,27 +72,28 @@ export default {
       return Math.round((flatRatings.reduce((a, b) => a + b) / ratings.length) * 10) / 10;
     }
 
-    function doTest() {
-      const minTest = this.minRate;
-      const maxTest = this.maxRate;
-      restaurantsFiltered = [];
-      // console.log(minTest, maxTest);
-      restaurantsList.forEach((restaurant) => {
-        if (getAverageRating(restaurant.ratings) >= minTest
-        && getAverageRating(restaurant.ratings) <= maxTest) {
-          // console.log(restaurant);
-          restaurantsFiltered.push(restaurant);
-        }
-      });
-      console.log(restaurantsFiltered);
-    }
-
+    // Test emit min/max
+    // TODO: Move to App.vue
     // Computed filter
+    const restaurantsFiltered = computed(() => restaurantsList.filter(({ ratings }) => {
+      const avgRating = getAverageRating(ratings);
+      return avgRating >= minRate.value && avgRating <= maxRate.value;
+    }));
+
+    /*
+    restaurantsList.forEach((restaurant) => {
+      if (getAverageRating(restaurant.ratings) >= minRate.value
+      && getAverageRating(restaurant.ratings) <= maxRate.value) {
+        data.push(restaurant);
+      }
+    });
+    */
+    // return data;
 
     return {
       restaurantsList,
       getAverageRating,
-      doTest,
+      restaurantsFiltered,
       minRate,
       maxRate,
     };
