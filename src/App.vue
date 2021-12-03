@@ -1,28 +1,26 @@
 <template>
   <main>
     <router-view/>
-    <Home/>
+    <HomeMap/>
   </main>
 </template>
 
 <script>
-import { useStore } from 'vuex';
-import Home from './views/Home.vue';
+// import { useStore } from 'vuex';
+import HomeMap from './views/HomeMap.vue';
 
 export default {
-  components: { Home },
+  components: { HomeMap },
   setup() {
-    const store = useStore();
-    const { restaurantsList } = store.state;
+    // const store = useStore();
+    // const { restaurantsList } = store.state;
 
     return {
-      restaurantsList,
+      // restaurantsList,
     };
   },
 };
 </script>
-
-// TODO : - Couleur spécifique pour le marqueur de la position utilisateur
 
 <style lang="scss">
 body {

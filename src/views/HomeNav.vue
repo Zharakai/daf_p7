@@ -1,13 +1,12 @@
-// TODO : - Filtre de tri par note
+// TODO: - Filtre de tri par note
 <template>
   <div id="nav" class="homeNav">
     <img alt="Just Here logo" src="../assets/logo.png">
     <div class="restaurantsNav">
       <div class="restaurantsFilter">
         <label for="ratingsFilter">Filtre par notes</label>
-        <!--<input type="range" v-model.number="minRate" min="0" :max="maxRate" list="range">
-        <input type="range" v-model.number="maxRate" :min="minRate" max="5" list="range">-->
         <input
+          @change='$emit("customChange", $event.target.value)'
           class="inputMin"
           type="number"
           v-model.number="minRate"
@@ -16,6 +15,7 @@
           list="range"
           step="0.5">
         <input
+          @change='$emit("customChange", $event.target.value)'
           ref="uniqueName"
           class="inputMax"
           type="number"
@@ -24,16 +24,7 @@
           max="5"
           list="range"
           step="0.5">
-        <!--<datalist id="range">
-          <option value="0"></option>
-          <option value="1"></option>
-          <option value="2"></option>
-          <option value="3"></option>
-          <option value="4"></option>
-          <option value="5"></option>
-        </datalist>-->
       </div>
-
       <ul>
         <li
           v-for="restaurant in restaurantsFiltered"
@@ -53,17 +44,25 @@
 
 <script>
 import { useStore } from 'vuex';
-import { ref, computed } from 'vue';
-// import VueRangeSlider from 'vue-range-component';
+import { ref, computed, emit } from 'vue';
 
 export default {
   setup() {
     const store = useStore();
     const { restaurantsList } = store.state;
-    // let restaurantsFiltered = restaurantsList;
     const minRate = ref(0);
     const maxRate = ref(5);
-    // console.log(VueRangeSlider);
+
+    const customChange = (event) => {
+      emit('customChange', event.target.value);
+    };
+
+    /*
+    function test() {
+      console.log('test', minRate.value, maxRate.value);
+      emit('test', 'someValueTest');
+    }
+    */
 
     function getAverageRating(ratings) {
       // Create an array for each restaurant with their ratings
@@ -74,34 +73,19 @@ export default {
 
     // Test emit min/max
     // TODO: Move to App.vue
-    // Computed filter
     const restaurantsFiltered = computed(() => restaurantsList.filter(({ ratings }) => {
       const avgRating = getAverageRating(ratings);
       return avgRating >= minRate.value && avgRating <= maxRate.value;
     }));
 
-    /*
-    restaurantsList.forEach((restaurant) => {
-      if (getAverageRating(restaurant.ratings) >= minRate.value
-      && getAverageRating(restaurant.ratings) <= maxRate.value) {
-        data.push(restaurant);
-      }
-    });
-    */
-    // return data;
-
     return {
       restaurantsList,
       getAverageRating,
+      customChange,
       restaurantsFiltered,
       minRate,
       maxRate,
     };
   },
-  /*
-  components: {
-    VueRangeSlider,
-  },
-  */
 };
 </script>
