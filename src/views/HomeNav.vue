@@ -6,7 +6,7 @@
       <div class="restaurantsFilter">
         <label for="ratingsFilter">Filtre par notes</label>
         <input
-          @change='$emit("customChange", $event.target.value)'
+          @change="customChange"
           class="inputMin"
           type="number"
           v-model.number="minRate"
@@ -15,8 +15,7 @@
           list="range"
           step="0.5">
         <input
-          @change='$emit("customChange", $event.target.value)'
-          ref="uniqueName"
+          @change="customChange"
           class="inputMax"
           type="number"
           v-model.number="maxRate"
@@ -44,25 +43,21 @@
 
 <script>
 import { useStore } from 'vuex';
-import { ref, computed, emit } from 'vue';
+import { ref, computed } from 'vue';
 
 export default {
-  setup() {
+  setup(props, context) {
     const store = useStore();
     const { restaurantsList } = store.state;
     const minRate = ref(0);
     const maxRate = ref(5);
 
+    console.log(context);
     const customChange = (event) => {
-      emit('customChange', event.target.value);
+      context.emit('customChange', event.target.value);
     };
 
-    /*
-    function test() {
-      console.log('test', minRate.value, maxRate.value);
-      emit('test', 'someValueTest');
-    }
-    */
+    // console.log(customChange);
 
     function getAverageRating(ratings) {
       // Create an array for each restaurant with their ratings
@@ -87,5 +82,12 @@ export default {
       maxRate,
     };
   },
+  /*
+  methods: {
+    logChange(event) {
+      console.log(event);
+    },
+  },
+  */
 };
 </script>

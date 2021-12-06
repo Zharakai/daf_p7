@@ -1,24 +1,41 @@
 <template>
   <main>
-    <router-view/>
+    <router-view @change="logChange"/>
     <HomeMap/>
+    <!--<MyInput @change="logChange" />-->
   </main>
 </template>
 
 <script>
 // import { useStore } from 'vuex';
 import HomeMap from './views/HomeMap.vue';
+// import MyInput from './views/HomeNav.vue';
 
 export default {
-  components: { HomeMap },
+  components: { HomeMap/* , MyInput */ },
   setup() {
     // const store = useStore();
     // const { restaurantsList } = store.state;
 
+    function logChange(event) {
+      console.log(event);
+    }
+
+    // console.log(MyInput);
+
     return {
       // restaurantsList,
+      // MyInput,
+      logChange,
     };
   },
+  /*
+  methods: {
+    logChange(event) {
+      console.log(event);
+    },
+  },
+  */
 };
 </script>
 
