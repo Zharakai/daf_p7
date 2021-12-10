@@ -1,4 +1,3 @@
-// TODO: - Filtre de tri par note
 <template>
   <div id="nav" class="homeNav">
     <img alt="Just Here logo" src="../assets/logo.png">
@@ -6,7 +5,7 @@
       <div class="restaurantsFilter">
         <label for="ratingsFilter">Filtre par notes</label>
         <input
-          @change="customChange"
+          @change="logChange"
           class="inputMin"
           type="number"
           v-model.number="minRate"
@@ -15,7 +14,7 @@
           list="range"
           step="0.5">
         <input
-          @change="customChange"
+          @change="logChange"
           class="inputMax"
           type="number"
           v-model.number="maxRate"
@@ -44,20 +43,19 @@
 <script>
 import { useStore } from 'vuex';
 import { ref, computed } from 'vue';
+// eslint-disable-next-line
+import EventBus from '@/EventBus';
 
 export default {
-  setup(props, context) {
+  setup() {
     const store = useStore();
     const { restaurantsList } = store.state;
     const minRate = ref(0);
     const maxRate = ref(5);
 
-    console.log(context);
-    const customChange = (event) => {
-      context.emit('customChange', event.target.value);
+    const logChange = (event) => {
+      EventBus.emit('logChange', event.target);
     };
-
-    // console.log(customChange);
 
     function getAverageRating(ratings) {
       // Create an array for each restaurant with their ratings
@@ -66,7 +64,6 @@ export default {
       return Math.round((flatRatings.reduce((a, b) => a + b) / ratings.length) * 10) / 10;
     }
 
-    // Test emit min/max
     // TODO: Move to App.vue
     const restaurantsFiltered = computed(() => restaurantsList.filter(({ ratings }) => {
       const avgRating = getAverageRating(ratings);
@@ -76,18 +73,11 @@ export default {
     return {
       restaurantsList,
       getAverageRating,
-      customChange,
+      logChange,
       restaurantsFiltered,
       minRate,
       maxRate,
     };
   },
-  /*
-  methods: {
-    logChange(event) {
-      console.log(event);
-    },
-  },
-  */
 };
 </script>

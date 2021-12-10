@@ -1,41 +1,66 @@
 <template>
   <main>
-    <router-view @change="logChange"/>
+    <router-view/>
     <HomeMap/>
-    <!--<MyInput @change="logChange" />-->
   </main>
 </template>
 
 <script>
-// import { useStore } from 'vuex';
+import { ref/* , computed */ } from 'vue';
+import { useStore } from 'vuex';
 import HomeMap from './views/HomeMap.vue';
-// import MyInput from './views/HomeNav.vue';
+// eslint-disable-next-line
+import EventBus from '@/EventBus';
 
 export default {
-  components: { HomeMap/* , MyInput */ },
+  components: { HomeMap },
   setup() {
-    // const store = useStore();
-    // const { restaurantsList } = store.state;
+    const store = useStore();
+    const { restaurantsList } = store.state;
+    let minRate;
+    let maxRate;
+    // let restaurantsFiltered;
 
-    function logChange(event) {
-      console.log(event);
+    // console.log('coucouGet');
+    function getAverageRating(ratings) {
+    // Create an array for each restaurant with their ratings
+      const flatRatings = ratings.map((rating) => rating.stars);
+      // Take each array previously created to return the average with one decimal
+      return Math.round((flatRatings.reduce((a, b) => a + b) / ratings.length) * 10) / 10;
     }
 
-    // console.log(MyInput);
+    // console.log('coucouFilter');
+    const restaurantsFiltered = restaurantsList.filter(({ ratings }) => {
+      const avgRating = getAverageRating(ratings);
+      console.log(avgRating >= minRate.value);
+      console.log(avgRating <= maxRate.value);
+      return avgRating >= minRate.value && avgRating <= maxRate.value;
+    });
+
+    function test(eventTarget) {
+      if (eventTarget.classList.value === 'inputMin') {
+        minRate = ref(eventTarget.value);
+        // console.log('minRate: ', minRate.value);
+        // console.log('restaurantsFiltered: ', restaurantsList);
+        restaurantsList.filter(({ ratings }) => {
+          console.log('restaurantsFiltered ratings');
+          return console.log(ratings);
+        });
+      } else if (eventTarget.classList.value === 'inputMax') {
+        maxRate = ref(eventTarget.value);
+        // console.log('maxRate: ', maxRate.value);
+        console.log('restaurantsFiltered: ', restaurantsList);
+      }
+    }
+
+    EventBus.on('logChange', test);
 
     return {
-      // restaurantsList,
-      // MyInput,
-      logChange,
+      restaurantsList,
+      restaurantsFiltered,
+      test,
     };
   },
-  /*
-  methods: {
-    logChange(event) {
-      console.log(event);
-    },
-  },
-  */
 };
 </script>
 

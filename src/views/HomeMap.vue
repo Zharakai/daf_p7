@@ -1,6 +1,7 @@
 <template>
   <div class="home">
     <GoogleMap
+    @mouseup="test"
     api-key="AIzaSyAQvcg7ps3Ca2wFlXQnHIFKbRgWwgOwRvU"
     style="width: 100%; height: 100vh;"
     :center="position"
@@ -30,9 +31,13 @@ export default defineComponent({
     store.dispatch('getLocation');
     const position = computed(() => store.state.position);
 
-    // Test emit move map
     store.dispatch('fetchRestaurants'); // Props
     const restaurantsList = computed(() => store.state.restaurantsList); // Props
+
+    // Test emit move map
+    function test() {
+      console.log(position);
+    }
 
     // TODO: Couleur spécifique pour le marqueur de la position utilisateur
     const markerOptions = { position, label: 'JH', title: 'Just Here' };
@@ -41,6 +46,7 @@ export default defineComponent({
       position,
       markerOptions,
       restaurantsList,
+      test,
     };
   },
 });
