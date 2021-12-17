@@ -3,11 +3,12 @@
     <router-link to="/" class="back" aria-label="Retour" title="Retour"></router-link>
     <div>
         <img :src="`https://maps.googleapis.com/maps/api/streetview?size=350x175&location=${lat},${long}&heading=151.78&pitch=-0.76&key=AIzaSyAQvcg7ps3Ca2wFlXQnHIFKbRgWwgOwRvU`">
-        <h1>{{ restaurantName }}</h1>
-        <p>{{ average }}</p>
-        <p>{{ address }}</p>
+        <h1><i class="fas fa-utensils"></i>{{ restaurantName }}</h1>
+        <p><i class="fas fa-star"></i>{{ average }}</p>
+        <p><i class="fas fa-map-marker"></i>{{ address }}</p>
         <p v-for="rating in ratings" :key="rating.comment">
-          {{ rating.stars}}/5 <br>
+          <i class="fas fa-star"></i>
+          {{ rating.stars}} <br>
           {{ rating.comment }}
         </p>
     </div>
@@ -18,7 +19,6 @@
 import { reactive, toRefs } from 'vue';
 import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
-// import getAverageRating from './HomeNav.vue';
 
 function getAverageRating(ratings) {
   const flatRatings = ratings.map((rating) => rating.stars);
@@ -55,36 +55,29 @@ export default ({
 
 <style lang="scss">
 .selectedRestaurant {
-  padding-top: 30px;
   width: 350px;
   overflow: auto;
-
   a {
     text-decoration: none;
     display: flex;
   }
-
   div {
     text-align: left;
-
     h1 {
       font-size: 1.375rem
     }
-
     h1, p {
       padding: 5px;
     }
   }
 }
-
 .back {
     width: fit-content;
-
+    color: black;
     &:hover {
       cursor: pointer;
       color: #42b983;
     }
-
     &::before {
     content: '\1F810';
     font-size: 3rem;
