@@ -5,7 +5,7 @@
       <div class="restaurantsFilter">
         <label for="ratingsFilter">Filtre par notes</label>
         <input
-          @change="logChange"
+          @change="logChange($event, 'min')"
           class="inputMin"
           type="number"
           v-model.number="minRate"
@@ -14,7 +14,7 @@
           list="range"
           step="0.5">
         <input
-          @change="logChange"
+          @change="logChange($event, 'max')"
           class="inputMax"
           type="number"
           v-model.number="maxRate"
@@ -25,12 +25,12 @@
       </div>
       <ul>
         <li
-          v-for="restaurant in restaurantsFiltered"
+          v-for="restaurant in restaurants"
           :key="restaurant.restaurantName">
           <router-link :to="{ name: 'Restaurant', params: { id: restaurant.restaurantName }}">
             <div>
               <p>{{ restaurant.restaurantName }}</p>
-              <p>{{ getAverageRating(restaurant.ratings) }}</p>
+              <p>{{ restaurant.average }}</p>
               <p>{{ restaurant.address }}</p>
             </div>
           </router-link>
@@ -41,40 +41,24 @@
 </template>
 
 <script>
-import { useStore } from 'vuex';
-import { ref, computed } from 'vue';
-// eslint-disable-next-line
+import { ref } from 'vue';
 import EventBus from '@/EventBus';
 
 export default {
+  props: {
+    restaurants: { type: Array },
+  },
   setup() {
-    const store = useStore();
-    const { restaurantsList } = store.state;
     const minRate = ref(0);
     const maxRate = ref(5);
 
-    const logChange = (event) => {
-      EventBus.emit('logChange', event.target);
+    const logChange = (event, type) => {
+      const data = { type, value: event.target.value };
+      EventBus.emit('updateFilter', data);
     };
 
-    function getAverageRating(ratings) {
-      // Create an array for each restaurant with their ratings
-      const flatRatings = ratings.map((rating) => rating.stars);
-      // Take each array previously created to return the average with one decimal
-      return Math.round((flatRatings.reduce((a, b) => a + b) / ratings.length) * 10) / 10;
-    }
-
-    // TODO: Move to App.vue
-    const restaurantsFiltered = computed(() => restaurantsList.filter(({ ratings }) => {
-      const avgRating = getAverageRating(ratings);
-      return avgRating >= minRate.value && avgRating <= maxRate.value;
-    }));
-
     return {
-      restaurantsList,
-      getAverageRating,
       logChange,
-      restaurantsFiltered,
       minRate,
       maxRate,
     };

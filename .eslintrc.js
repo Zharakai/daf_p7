@@ -18,8 +18,8 @@ module.exports = {
       alias: {
         extensions: ['.js', '.vue', '.json'],
         map: [
-          ['~', path.resolve(__dirname, './')],
-          ['@', path.resolve(__dirname, './')],
+          ['~', path.resolve(__dirname, './src/')],
+          ['@', path.resolve(__dirname, './src/')],
         ],
       },
     },

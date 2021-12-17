@@ -7,10 +7,10 @@
     :center="position"
     :zoom="11">
     <Marker
-      :options="{ position }"
+      :options="markerOptions"
       icon="http://maps.google.com/mapfiles/ms/icons/blue-dot.png"/>
     <Marker
-      v-for="restaurant in restaurantsList"
+      v-for="restaurant in restaurants"
       :key="restaurant.name"
       :options="{ position: { lat: restaurant.lat, lng: restaurant.long } }"
     />
@@ -25,6 +25,7 @@ import { useStore } from 'vuex';
 
 export default defineComponent({
   components: { GoogleMap, Marker },
+  props: { restaurants: { type: Array } },
   setup() {
     const store = useStore();
 
@@ -32,7 +33,6 @@ export default defineComponent({
     const position = computed(() => store.state.position);
 
     store.dispatch('fetchRestaurants'); // Props
-    const restaurantsList = computed(() => store.state.restaurantsList); // Props
 
     // Test emit move map
     function test() {
@@ -40,12 +40,11 @@ export default defineComponent({
     }
 
     // TODO: Couleur spécifique pour le marqueur de la position utilisateur
-    const markerOptions = { position, label: 'JH', title: 'Just Here' };
+    const markerOptions = computed(() => ({ position: position.value, label: 'JH', title: 'Just Here' }));
 
     return {
       position,
       markerOptions,
-      restaurantsList,
       test,
     };
   },

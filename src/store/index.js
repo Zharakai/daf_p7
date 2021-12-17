@@ -1,5 +1,12 @@
 import { createStore } from 'vuex';
 
+function getAverageRating(ratings) {
+  // Create an array for each restaurant with their ratings
+  const flatRatings = ratings.map((rating) => rating.stars);
+  // Take each array previously created to return the average with one decimal
+  return Math.round((flatRatings.reduce((a, b) => a + b) / ratings.length) * 10) / 10;
+}
+
 export default createStore({
   state() {
     return {
@@ -15,6 +22,8 @@ export default createStore({
     },
 
     ADD_RESTAURANT(state, newRestaurant) {
+      // eslint-disable-next-line no-param-reassign
+      newRestaurant.average = getAverageRating(newRestaurant.ratings);
       state.restaurantsList.push(newRestaurant);
     },
   },
