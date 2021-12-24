@@ -2,13 +2,18 @@
   <div class="selectedRestaurant">
     <router-link to="/" class="back" aria-label="Retour" title="Retour"></router-link>
     <div>
-        <img :src="`https://maps.googleapis.com/maps/api/streetview?size=350x175&location=${lat},${long}&heading=151.78&pitch=-0.76&key=AIzaSyAQvcg7ps3Ca2wFlXQnHIFKbRgWwgOwRvU`">
-        <h1><i class="fas fa-utensils"></i>{{ restaurantName }}</h1>
-        <p><i class="fas fa-star"></i>{{ average }}</p>
-        <p><i class="fas fa-map-marker"></i>{{ address }}</p>
-        <p v-for="rating in ratings" :key="rating.comment">
-          <i class="fas fa-star"></i>
-          {{ rating.stars}} <br>
+        <img :src="`https://maps.googleapis.com/maps/api/streetview?size=350x175&location=${toRefsSate.lat.value},${toRefsSate.long.value}&heading=151.78&pitch=-0.76&key=AIzaSyAQvcg7ps3Ca2wFlXQnHIFKbRgWwgOwRvU`">
+        <h1><i class="fas fa-utensils"></i>{{ toRefsSate.restaurantName.value }}</h1>
+        <p><i class="fas fa-star"></i>{{ toRefsSate.average.value }}</p>
+        <p><i class="fas fa-map-marker"></i>{{ toRefsSate.address.value }}</p>
+        <router-link :to="{
+          name: 'RestaurantReview',
+          params: { id: toRefsSate.restaurantName.value }
+          }">
+          <button>Rédiger un avis</button>
+        </router-link>
+        <p v-for="rating in toRefsSate.ratings.value" :key="rating.comment">
+          <i class="fas fa-star"></i>{{ rating.stars}}<br>
           {{ rating.comment }}
         </p>
     </div>
@@ -48,7 +53,11 @@ export default ({
       state.average = getAverageRating(restaurant.ratings);
     });
 
-    return toRefs(state);
+    const toRefsSate = toRefs(state);
+
+    return {
+      toRefsSate,
+    };
   },
 });
 </script>
@@ -68,6 +77,11 @@ export default ({
     }
     h1, p {
       padding: 5px;
+    }
+
+    i {
+      color: #ff9e16;
+      margin: 0 5px 0 0;
     }
   }
 }

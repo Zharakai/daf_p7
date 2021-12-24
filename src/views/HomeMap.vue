@@ -36,7 +36,7 @@ export default defineComponent({
 
     // Test emit move map
     function test() {
-      console.log(GoogleMap.props.center[1]);
+      console.log(position);
     }
 
     // TODO: Couleur spécifique pour le marqueur de la position utilisateur
