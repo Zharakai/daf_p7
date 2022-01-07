@@ -1,6 +1,6 @@
 <template>
   <main>
-    <router-view :restaurants="restaurantsFiltered" />
+    <router-view :restaurants="restaurantsFiltered" /> <!-- data -->
     <HomeMap :restaurants="restaurantsFiltered" />
   </main>
 </template>
@@ -8,12 +8,41 @@
 <script>
 import { ref, computed } from 'vue';
 import { useStore } from 'vuex';
+import { useRoute } from 'vue-router';
 import HomeMap from './views/HomeMap.vue';
 import EventBus from '@/EventBus';
 
 export default {
   components: { HomeMap },
   setup() {
+    const route = useRoute();
+    const minRate = ref(0);
+    const maxRate = ref(5);
+    let restaurantsFiltered;
+    let restaurant;
+
+    function updateMinMax({ type, value }) {
+      if (type === 'min') {
+        minRate.value = value;
+        return;
+      }
+      maxRate.value = value;
+    }
+
+    if (!route.params.id) {
+      const store = useStore();
+      const restaurantsList = computed(() => store.state.restaurantsList);
+
+      // eslint-disable-next-line arrow-body-style
+      restaurantsFiltered = computed(() => restaurantsList.value.filter(({ average }) => {
+        return average >= minRate.value && average <= maxRate.value;
+      }));
+
+      EventBus.on('updateFilter', updateMinMax);
+    } else if (route.params.id) {
+      console.log(route.params.id);
+    }
+    /*
     const store = useStore();
     const restaurantsList = computed(() => store.state.restaurantsList);
     const minRate = ref(0);
@@ -36,8 +65,10 @@ export default {
 
     EventBus.on('updateFilter', updateMinMax);
 
+    */
     return {
-      restaurantsFiltered,
+      restaurantsFiltered, // data
+      restaurant,
     };
   },
 };
@@ -56,7 +87,7 @@ body {
   height: 100vh;
 }
 #nav {
-  width: 350px;
+  width: 400px;
   overflow: auto;
   a {
     font-weight: bold;
@@ -109,6 +140,6 @@ main {
   height: 100%;
 }
 .home {
-  width: calc(100vw - 350px);
+  width: calc(100vw - 400px);
 }
 </style>

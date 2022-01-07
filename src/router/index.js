@@ -15,7 +15,7 @@ const routes = [
     component: Restaurant,
   },
   {
-    path: '/restaurant/:id/restaurant_review',
+    path: '/restaurant/:id/review',
     name: 'RestaurantReview',
     component: RestaurantReview,
   },

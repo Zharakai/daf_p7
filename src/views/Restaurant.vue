@@ -2,15 +2,15 @@
   <div class="selectedRestaurant">
     <router-link to="/" class="back" aria-label="Retour" title="Retour"></router-link>
     <div>
-        <img :src="`https://maps.googleapis.com/maps/api/streetview?size=350x175&location=${toRefsSate.lat.value},${toRefsSate.long.value}&heading=151.78&pitch=-0.76&key=AIzaSyAQvcg7ps3Ca2wFlXQnHIFKbRgWwgOwRvU`">
+        <img :src="`https://maps.googleapis.com/maps/api/streetview?size=400x200&location=${toRefsSate.lat.value},${toRefsSate.long.value}&heading=151.78&pitch=-0.76&key=AIzaSyAQvcg7ps3Ca2wFlXQnHIFKbRgWwgOwRvU`">
         <h1><i class="fas fa-utensils"></i>{{ toRefsSate.restaurantName.value }}</h1>
         <p><i class="fas fa-star"></i>{{ toRefsSate.average.value }}</p>
         <p><i class="fas fa-map-marker"></i>{{ toRefsSate.address.value }}</p>
         <router-link :to="{
           name: 'RestaurantReview',
-          params: { id: toRefsSate.restaurantName.value }
+          params: { id: $route.params.id }
           }">
-          <button>Rédiger un avis</button>
+          Rédiger un avis
         </router-link>
         <p v-for="rating in toRefsSate.ratings.value" :key="rating.comment">
           <i class="fas fa-star"></i>{{ rating.stars}}<br>
@@ -31,6 +31,7 @@ function getAverageRating(ratings) {
 }
 
 export default ({
+  // props
   setup() {
     const store = useStore();
     const route = useRoute();
@@ -56,7 +57,7 @@ export default ({
     const toRefsSate = toRefs(state);
 
     return {
-      toRefsSate,
+      toRefsSate, // state ?
     };
   },
 });
@@ -64,11 +65,12 @@ export default ({
 
 <style lang="scss">
 .selectedRestaurant {
-  width: 350px;
+  width: 400px;
   overflow: auto;
   a {
     text-decoration: none;
     display: flex;
+    justify-content: center;
   }
   div {
     text-align: left;
@@ -83,18 +85,48 @@ export default ({
       color: #ff9e16;
       margin: 0 5px 0 0;
     }
+
+    a {
+      border: solid 1px;
+      margin: 0 20%;
+      padding: 1%;
+      color: black;
+      text-decoration: none;
+      border-radius: 8px;
+      &:hover {
+        color: #42b983;
+      }
+    }
   }
 }
 .back {
-    width: fit-content;
-    color: black;
-    &:hover {
-      cursor: pointer;
-      color: #42b983;
-    }
-    &::before {
-    content: '\1F810';
-    font-size: 3rem;
+  width: 20px;
+  height: 20px;
+  border-width: 4px 4px 0 0;
+  border-style: solid;
+  margin: 10px;
+  position: absolute;
+  display: inline-block;
+  vertical-align: middle;
+  color: rgb(0, 0, 0);
+  box-sizing: border-box;
+  transform: rotate(225deg);
+  &::after, &::before {
+    content: "";
+    box-sizing: border-box;
+  }
+  &::before {
+    right: 0;
+    top: -3px;
+    position: absolute;
+    height: 4px;
+    box-shadow: inset 0 0 0 32px;
+    transform: rotate(-45deg);
+    width: 23px;
+    transform-origin: right top;
+  }
+  &:hover {
+    color: #42b983;
   }
 }
 </style>
