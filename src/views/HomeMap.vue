@@ -1,7 +1,6 @@
 <template>
   <div class="home">
     <GoogleMap
-    @mouseup="test"
     api-key="AIzaSyAQvcg7ps3Ca2wFlXQnHIFKbRgWwgOwRvU"
     style="width: 100%; height: 100vh;"
     :center="position"
@@ -10,7 +9,7 @@
       :options="markerOptions"
       icon="http://maps.google.com/mapfiles/ms/icons/blue-dot.png"/>
     <Marker
-      v-for="restaurant in data.value"
+      v-for="restaurant in restaurants"
       :key="restaurant.name"
       :options="{ position: { lat: restaurant.lat, lng: restaurant.long } }"
     />
@@ -31,8 +30,12 @@ export default defineComponent({
   setup(props) {
     const store = useStore();
     const { data } = toRefs(props);
-    console.log(data.value);
-    console.log(store);
+    // console.log(data.value);
+    // console.log(store);
+
+    // if (data.)
+    // eslint-disable-next-line no-underscore-dangle
+    console.log('test', !!data.value.restaurantName);
 
     store.dispatch('getLocation');
     const position = computed(() => store.state.position);
@@ -41,9 +44,12 @@ export default defineComponent({
     // data.dispatch('fetchRestaurants');
 
     // Test emit move map
+    /*
     function test() {
       console.log(position);
     }
+    <!-- @mouseup="test" -->
+    */
 
     // TODO: Couleur spécifique pour le marqueur de la position utilisateur
     const markerOptions = computed(() => ({ position: position.value, label: 'JH', title: 'Just Here' }));
@@ -51,7 +57,8 @@ export default defineComponent({
     return {
       position,
       markerOptions,
-      test,
+      restaurants: data,
+      // test,
     };
   },
 });

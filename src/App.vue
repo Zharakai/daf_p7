@@ -67,10 +67,13 @@ export default {
 
     const data = computed(() => {
       if (route.params.id) {
+        console.log('restaurant');
         return restaurant;
       }
+      console.log('restaurantsFiltered');
       return restaurantsFiltered;
     });
+
     refreshData(route.params.id);
 
     watch(() => route.params.id, () => {
