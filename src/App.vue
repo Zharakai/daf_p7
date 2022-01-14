@@ -1,12 +1,17 @@
 <template>
   <main>
-    <router-view :restaurants="restaurantsFiltered" /> <!-- data -->
-    <HomeMap :restaurants="restaurantsFiltered" />
+    <router-view :data="data" />
+    <HomeMap :data="data" />
   </main>
 </template>
 
 <script>
-import { ref, computed } from 'vue';
+import {
+  ref,
+  computed,
+  watch,
+  reactive,
+} from 'vue';
 import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
 import HomeMap from './views/HomeMap.vue';
@@ -16,10 +21,19 @@ export default {
   components: { HomeMap },
   setup() {
     const route = useRoute();
+    const store = useStore();
     const minRate = ref(0);
     const maxRate = ref(5);
     let restaurantsFiltered;
-    let restaurant;
+
+    const restaurant = reactive({
+      restaurantName: '',
+      address: '',
+      ratings: [],
+      average: 0,
+      lat: '',
+      long: '',
+    });
 
     function updateMinMax({ type, value }) {
       if (type === 'min') {
@@ -29,46 +43,42 @@ export default {
       maxRate.value = value;
     }
 
-    if (!route.params.id) {
-      const store = useStore();
-      const restaurantsList = computed(() => store.state.restaurantsList);
+    function refreshData(id) {
+      if (!id) {
+        const restaurantsList = computed(() => store.state.restaurantsList);
 
-      // eslint-disable-next-line arrow-body-style
-      restaurantsFiltered = computed(() => restaurantsList.value.filter(({ average }) => {
-        return average >= minRate.value && average <= maxRate.value;
-      }));
+        // eslint-disable-next-line arrow-body-style
+        restaurantsFiltered = computed(() => restaurantsList.value.filter(({ average }) => {
+          return average >= minRate.value && average <= maxRate.value;
+        }));
 
-      EventBus.on('updateFilter', updateMinMax);
-    } else if (route.params.id) {
-      console.log(route.params.id);
-    }
-    /*
-    const store = useStore();
-    const restaurantsList = computed(() => store.state.restaurantsList);
-    const minRate = ref(0);
-    const maxRate = ref(5);
-
-    // Receve new restaurant here
-
-    // eslint-disable-next-line arrow-body-style
-    const restaurantsFiltered = computed(() => restaurantsList.value.filter(({ average }) => {
-      return average >= minRate.value && average <= maxRate.value;
-    }));
-
-    function updateMinMax({ type, value }) {
-      if (type === 'min') {
-        minRate.value = value;
-        return;
+        EventBus.on('updateFilter', updateMinMax);
+      } else {
+        store.dispatch('getRestaurantByName', id).then((matchingRestaurant) => {
+          restaurant.restaurantName = matchingRestaurant.restaurantName;
+          restaurant.address = matchingRestaurant.address;
+          restaurant.ratings = matchingRestaurant.ratings;
+          restaurant.lat = matchingRestaurant.lat;
+          restaurant.long = matchingRestaurant.long;
+          restaurant.average = matchingRestaurant.average;
+        });
       }
-      maxRate.value = value;
     }
 
-    EventBus.on('updateFilter', updateMinMax);
+    const data = computed(() => {
+      if (route.params.id) {
+        return restaurant;
+      }
+      return restaurantsFiltered;
+    });
+    refreshData(route.params.id);
 
-    */
+    watch(() => route.params.id, () => {
+      refreshData(route.params.id);
+    });
+
     return {
-      restaurantsFiltered, // data
-      restaurant,
+      data,
     };
   },
 };

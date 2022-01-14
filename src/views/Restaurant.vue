@@ -2,17 +2,17 @@
   <div class="selectedRestaurant">
     <router-link to="/" class="back" aria-label="Retour" title="Retour"></router-link>
     <div>
-        <img :src="`https://maps.googleapis.com/maps/api/streetview?size=400x200&location=${toRefsSate.lat.value},${toRefsSate.long.value}&heading=151.78&pitch=-0.76&key=AIzaSyAQvcg7ps3Ca2wFlXQnHIFKbRgWwgOwRvU`">
-        <h1><i class="fas fa-utensils"></i>{{ toRefsSate.restaurantName.value }}</h1>
-        <p><i class="fas fa-star"></i>{{ toRefsSate.average.value }}</p>
-        <p><i class="fas fa-map-marker"></i>{{ toRefsSate.address.value }}</p>
+        <img :src="`https://maps.googleapis.com/maps/api/streetview?size=400x200&location=${restaurant.lat},${restaurant.long}&heading=151.78&pitch=-0.76&key=AIzaSyAQvcg7ps3Ca2wFlXQnHIFKbRgWwgOwRvU`">
+        <h1><i class="fas fa-utensils"></i>{{ restaurant.restaurantName }}</h1>
+        <p><i class="fas fa-star"></i>{{ restaurant.average }}</p>
+        <p><i class="fas fa-map-marker"></i>{{ restaurant.address }}</p>
         <router-link :to="{
           name: 'RestaurantReview',
           params: { id: $route.params.id }
           }">
           Rédiger un avis
         </router-link>
-        <p v-for="rating in toRefsSate.ratings.value" :key="rating.comment">
+        <p v-for="rating in restaurant.ratings" :key="rating.comment">
           <i class="fas fa-star"></i>{{ rating.stars}}<br>
           {{ rating.comment }}
         </p>
@@ -21,21 +21,31 @@
 </template>
 
 <script>
-import { reactive, toRefs } from 'vue';
+
+import { toRefs } from 'vue';
+/*
 import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
+*/
 
+/*
 function getAverageRating(ratings) {
   const flatRatings = ratings.map((rating) => rating.stars);
   return Math.round((flatRatings.reduce((a, b) => a + b) / ratings.length) * 10) / 10;
 }
+*/
 
 export default ({
   // props
-  setup() {
-    const store = useStore();
-    const route = useRoute();
+  props: {
+    data: { type: Object },
+  },
+  setup(props) {
+    const { data } = toRefs(props);
+    // const store = useStore();
+    // const route = useRoute();
 
+    /*
     const state = reactive({
       restaurantName: '',
       address: '',
@@ -44,7 +54,9 @@ export default ({
       lat: '',
       long: '',
     });
+    */
 
+    /*
     store.dispatch('getRestaurantByName', route.params.id).then((restaurant) => {
       state.restaurantName = restaurant.restaurantName;
       state.address = restaurant.address;
@@ -53,12 +65,12 @@ export default ({
       state.long = restaurant.long;
       state.average = getAverageRating(restaurant.ratings);
     });
+    */
 
-    const toRefsSate = toRefs(state);
+    // const toRefsSate = toRefs(state);
 
-    return {
-      toRefsSate, // state ?
-    };
+    return { restaurant: data };
+    // toRefsSate, // state ?
   },
 });
 </script>

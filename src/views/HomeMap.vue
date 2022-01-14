@@ -10,7 +10,7 @@
       :options="markerOptions"
       icon="http://maps.google.com/mapfiles/ms/icons/blue-dot.png"/>
     <Marker
-      v-for="restaurant in restaurants"
+      v-for="restaurant in data.value"
       :key="restaurant.name"
       :options="{ position: { lat: restaurant.lat, lng: restaurant.long } }"
     />
@@ -19,20 +19,26 @@
 </template>
 
 <script>
-import { defineComponent, computed } from 'vue';
+import { defineComponent, computed, toRefs } from 'vue';
 import { GoogleMap, Marker } from 'vue3-google-map';
 import { useStore } from 'vuex';
 
 export default defineComponent({
   components: { GoogleMap, Marker },
-  props: { restaurants: { type: Array } },
-  setup() {
+  props: {
+    data: { type: Object },
+  },
+  setup(props) {
     const store = useStore();
+    const { data } = toRefs(props);
+    console.log(data.value);
+    console.log(store);
 
     store.dispatch('getLocation');
     const position = computed(() => store.state.position);
 
     store.dispatch('fetchRestaurants'); // Props
+    // data.dispatch('fetchRestaurants');
 
     // Test emit move map
     function test() {

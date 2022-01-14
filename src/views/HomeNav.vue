@@ -55,23 +55,25 @@
 </template>
 
 <script>
-import { ref } from 'vue';
+import { ref, toRefs } from 'vue';
 import EventBus from '@/EventBus';
 
 export default {
   props: {
-    restaurants: { type: Array },
+    data: { type: Object },
   },
-  setup() {
+  setup(props) {
     const minRate = ref(0);
     const maxRate = ref(5);
+    const { data } = toRefs(props);
 
     const logChange = (event, type) => {
-      const data = { type, value: event.target.value };
-      EventBus.emit('updateFilter', data);
+      const eventData = { type, value: event.target.value };
+      EventBus.emit('updateFilter', eventData);
     };
 
     return {
+      restaurants: data,
       logChange,
       minRate,
       maxRate,

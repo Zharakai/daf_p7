@@ -17,7 +17,7 @@
 <script>
 export default {
   setup() {
-    console.log('test');
+    // emit restaurant added
   },
 };
 </script>
