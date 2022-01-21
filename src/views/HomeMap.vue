@@ -7,8 +7,19 @@
     :zoom="11">
     <Marker
       :options="markerOptions"
-      icon="http://maps.google.com/mapfiles/ms/icons/blue-dot.png"/>
+      icon="http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+    />
+    <!--
+      Check if data is a list of restaurants or a restaurant
+      by checking if property restaurantName exists
+    -->
     <Marker
+      v-if="data.restaurantName"
+      :key="data.restaurantName"
+      :options="{ position: { lat: data.lat, lng: data.long } }"
+    />
+    <Marker
+      v-else
       v-for="restaurant in restaurants"
       :key="restaurant.name"
       :options="{ position: { lat: restaurant.lat, lng: restaurant.long } }"
@@ -30,18 +41,11 @@ export default defineComponent({
   setup(props) {
     const store = useStore();
     const { data } = toRefs(props);
-    // console.log(data.value);
-    // console.log(store);
-
-    // if (data.)
-    // eslint-disable-next-line no-underscore-dangle
-    console.log('test', !!data.value.restaurantName);
 
     store.dispatch('getLocation');
     const position = computed(() => store.state.position);
 
-    store.dispatch('fetchRestaurants'); // Props
-    // data.dispatch('fetchRestaurants');
+    store.dispatch('fetchRestaurants');
 
     // Test emit move map
     /*

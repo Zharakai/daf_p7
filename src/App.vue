@@ -67,10 +67,8 @@ export default {
 
     const data = computed(() => {
       if (route.params.id) {
-        console.log('restaurant');
         return restaurant;
       }
-      console.log('restaurantsFiltered');
       return restaurantsFiltered;
     });
 
@@ -79,6 +77,14 @@ export default {
     watch(() => route.params.id, () => {
       refreshData(route.params.id);
     });
+
+    function test({ rating }) {
+      console.log(Number(document.getElementsByClassName('stars')[0].value));
+      console.log(document.getElementsByClassName('comment')[0].value);
+      console.log(rating);
+    }
+
+    EventBus.on('submitReview', test);
 
     return {
       data,
