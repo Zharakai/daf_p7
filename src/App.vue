@@ -78,13 +78,18 @@ export default {
       refreshData(route.params.id);
     });
 
-    function test({ rating }) {
-      console.log(Number(document.getElementsByClassName('stars')[0].value));
-      console.log(document.getElementsByClassName('comment')[0].value);
-      console.log(rating);
+    function addNewRating(rating) {
+      const currentRestaurant = data.value;
+
+      const object = {
+        currentRestaurant,
+        rating,
+      };
+
+      store.commit('ADD_RATING', object);
     }
 
-    EventBus.on('submitReview', test);
+    EventBus.on('submitReview', addNewRating);
 
     return {
       data,

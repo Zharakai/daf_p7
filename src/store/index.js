@@ -26,6 +26,17 @@ export default createStore({
       newRestaurant.average = getAverageRating(newRestaurant.ratings);
       state.restaurantsList.push(newRestaurant);
     },
+
+    ADD_RATING(state, datas) {
+      const currentRestaurant = state.restaurantsList.find((restaurant) => {
+        const findResult = restaurant.restaurantName === datas.currentRestaurant.restaurantName;
+        return findResult;
+      });
+
+      currentRestaurant.ratings.push(datas.rating);
+
+      currentRestaurant.average = getAverageRating(currentRestaurant.ratings);
+    },
   },
 
   actions: {
@@ -63,5 +74,12 @@ export default createStore({
         console.error(error);
       }
     },
+
+    /*
+    addRating({ commit, state }) {
+      console.log(state);
+      commit('ADD_RATING');
+    },
+    */
   },
 });

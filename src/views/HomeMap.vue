@@ -4,7 +4,9 @@
     api-key="AIzaSyAQvcg7ps3Ca2wFlXQnHIFKbRgWwgOwRvU"
     style="width: 100%; height: 100vh;"
     :center="position"
-    :zoom="11">
+    :zoom="11"
+    @click="addNewRestaurant"
+    @mouseup="test">
     <Marker
       :options="markerOptions"
       icon="http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
@@ -30,6 +32,7 @@
 
 <script>
 import { defineComponent, computed, toRefs } from 'vue';
+import { useRoute } from 'vue-router';
 import { GoogleMap, Marker } from 'vue3-google-map';
 import { useStore } from 'vuex';
 
@@ -40,6 +43,7 @@ export default defineComponent({
   },
   setup(props) {
     const store = useStore();
+    const route = useRoute();
     const { data } = toRefs(props);
 
     store.dispatch('getLocation');
@@ -47,13 +51,16 @@ export default defineComponent({
 
     store.dispatch('fetchRestaurants');
 
-    // Test emit move map
-    /*
-    function test() {
-      console.log(position);
+    function addNewRestaurant(event) {
+      if (route.path === '/') {
+        console.log(event.latLng.lat());
+        console.log(event.latLng.lng());
+      }
     }
-    <!-- @mouseup="test" -->
-    */
+    // Test emit move map
+    function test(event) {
+      console.log(event.latLng.getCenter());
+    }
 
     // TODO: Couleur spécifique pour le marqueur de la position utilisateur
     const markerOptions = computed(() => ({ position: position.value, label: 'JH', title: 'Just Here' }));
@@ -62,7 +69,8 @@ export default defineComponent({
       position,
       markerOptions,
       restaurants: data,
-      // test,
+      addNewRestaurant,
+      test,
     };
   },
 });

@@ -27,6 +27,7 @@ export default ({
   emits: ['submitReview'],
   setup(props) {
     const { data } = toRefs(props);
+    // let redirectAfterValidation; @click="$router.push(`/restaurant/${$route.params.id}`)"
     // emit restaurant added
 
     const submitReview = () => {
@@ -39,10 +40,9 @@ export default ({
           comment,
         };
         EventBus.emit('submitReview', rating);
+        // redirectAfterValidation
       } else {
         alert('Merci de remplir les champs');
-        // if (comment === '') document.getElementsByClassName('comment')[0].classList.add('empty');
-        // if (stars === 0) document.getElementsByClassName('stars')[0].classList.add('empty');
       }
     };
 
