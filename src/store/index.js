@@ -16,7 +16,7 @@ export default createStore({
   },
 
   mutations: {
-    GET_POSITION(state, pos) {
+    SET_POSITION(state, pos) {
       // eslint-disable-next-line no-param-reassign
       state.position = pos;
     },
@@ -47,16 +47,12 @@ export default createStore({
             lat: position.coords.latitude,
             lng: position.coords.longitude,
           };
-          commit('GET_POSITION', pos);
+          commit('SET_POSITION', pos);
         },
         (error) => {
           console.log(error.message);
         },
       );
-    },
-
-    getRestaurantByName({ state }, name) {
-      return state.restaurantsList.find((restaurant) => restaurant.restaurantName === name);
     },
 
     async fetchRestaurants({ commit, state }) {

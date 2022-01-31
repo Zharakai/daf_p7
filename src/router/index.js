@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import HomeNav from '../views/HomeNav.vue';
 import Restaurant from '../views/Restaurant.vue';
 import RestaurantReview from '../views/RestaurantReview.vue';
+import AddRestaurant from '../views/AddRestaurant.vue';
 
 const routes = [
   {
@@ -18,6 +19,11 @@ const routes = [
     path: '/restaurant/:id/review',
     name: 'RestaurantReview',
     component: RestaurantReview,
+  },
+  {
+    path: '/add_restaurant/:lat,:lng',
+    name: 'AddRestaurant',
+    component: AddRestaurant,
   },
 ];
 

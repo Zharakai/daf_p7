@@ -13,13 +13,14 @@ import {
   reactive,
 } from 'vue';
 import { useStore } from 'vuex';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import HomeMap from './views/HomeMap.vue';
 import EventBus from '@/EventBus';
-
+// UpdateminMax + addNewRating
 export default {
   components: { HomeMap },
   setup() {
+    const router = useRouter();
     const route = useRoute();
     const store = useStore();
     const minRate = ref(0);
@@ -43,10 +44,9 @@ export default {
       maxRate.value = value;
     }
 
-    function refreshData(id) {
+    function refreshData(id) { // TODO: Remove refreshData
+      const restaurantsList = computed(() => store.state.restaurantsList);
       if (!id) {
-        const restaurantsList = computed(() => store.state.restaurantsList);
-
         // eslint-disable-next-line arrow-body-style
         restaurantsFiltered = computed(() => restaurantsList.value.filter(({ average }) => {
           return average >= minRate.value && average <= maxRate.value;
@@ -54,14 +54,15 @@ export default {
 
         EventBus.on('updateFilter', updateMinMax);
       } else {
-        store.dispatch('getRestaurantByName', id).then((matchingRestaurant) => {
-          restaurant.restaurantName = matchingRestaurant.restaurantName;
-          restaurant.address = matchingRestaurant.address;
-          restaurant.ratings = matchingRestaurant.ratings;
-          restaurant.lat = matchingRestaurant.lat;
-          restaurant.long = matchingRestaurant.long;
-          restaurant.average = matchingRestaurant.average;
-        });
+        const matchingRestaurant = restaurantsList.value.find(
+          ({ restaurantName }) => restaurantName === id,
+        );
+        restaurant.restaurantName = matchingRestaurant.restaurantName;
+        restaurant.address = matchingRestaurant.address;
+        restaurant.ratings = matchingRestaurant.ratings;
+        restaurant.lat = matchingRestaurant.lat;
+        restaurant.long = matchingRestaurant.long;
+        restaurant.average = matchingRestaurant.average;
       }
     }
 
@@ -87,6 +88,8 @@ export default {
       };
 
       store.commit('ADD_RATING', object);
+      refreshData(route.params.id);
+      router.push({ name: 'Restaurant', params: { id: route.params.id } });
     }
 
     EventBus.on('submitReview', addNewRating);

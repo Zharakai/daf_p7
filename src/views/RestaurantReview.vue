@@ -73,8 +73,5 @@ export default ({
       max-height: 40vh;
     }
   }
-  .empty {
-    border: crimson solid 1px;
-  }
 }
 </style>

@@ -1,12 +1,13 @@
 <template>
   <div class="home">
     <GoogleMap
+    ref="mapRef"
     api-key="AIzaSyAQvcg7ps3Ca2wFlXQnHIFKbRgWwgOwRvU"
     style="width: 100%; height: 100vh;"
     :center="position"
     :zoom="11"
     @click="addNewRestaurant"
-    @mouseup="test">
+    @dragend="mapCenter">
     <Marker
       :options="markerOptions"
       icon="http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
@@ -31,8 +32,13 @@
 </template>
 
 <script>
-import { defineComponent, computed, toRefs } from 'vue';
-import { useRoute } from 'vue-router';
+import {
+  defineComponent,
+  computed,
+  toRefs,
+  ref,
+} from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import { GoogleMap, Marker } from 'vue3-google-map';
 import { useStore } from 'vuex';
 
@@ -42,8 +48,10 @@ export default defineComponent({
     data: { type: Object },
   },
   setup(props) {
+    const mapRef = ref(null);
     const store = useStore();
     const route = useRoute();
+    const router = useRouter();
     const { data } = toRefs(props);
 
     store.dispatch('getLocation');
@@ -55,11 +63,20 @@ export default defineComponent({
       if (route.path === '/') {
         console.log(event.latLng.lat());
         console.log(event.latLng.lng());
+        router.push({
+          // path: `/add_restaurant/${event.latLng.lat()},${event.latLng.lng()}`,
+          name: 'AddRestaurant',
+          params: {
+            lat: event.latLng.lat(),
+            lng: event.latLng.lng(),
+          },
+        });
       }
     }
     // Test emit move map
-    function test(event) {
-      console.log(event.latLng.getCenter());
+    function mapCenter() {
+      console.log(mapRef.value.map.center.lat());
+      console.log(mapRef.value.map.center.lng());
     }
 
     // TODO: Couleur spécifique pour le marqueur de la position utilisateur
@@ -70,7 +87,8 @@ export default defineComponent({
       markerOptions,
       restaurants: data,
       addNewRestaurant,
-      test,
+      mapCenter,
+      mapRef,
     };
   },
 });
