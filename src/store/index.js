@@ -1,7 +1,6 @@
 import { createStore } from 'vuex';
 
 function getAverageRating(ratings) {
-  console.log(ratings);
   if (ratings.length === 0) {
     return false;
   }
@@ -83,14 +82,6 @@ export default createStore({
         const newRestaurants = await response.json();
         newRestaurants.forEach((newRestaurant) => {
           dispatch('addRestaurant', newRestaurant);
-          /*
-          // eslint-disable-next-line max-len
-          const restaurantExist = state.restaurantsList.find((restaurant) =>
-          restaurant.restaurantName === newRestaurant.restaurantName);
-          if (!restaurantExist) {
-            commit('ADD_RESTAURANT', newRestaurant);
-          }
-          */
         });
       } catch (error) {
         console.error(error);

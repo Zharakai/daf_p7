@@ -70,6 +70,7 @@ export default defineComponent({
         });
       }
     }
+
     // Test emit move map
     function mapCenter() {
       console.log(mapRef.value.map.center.lat());

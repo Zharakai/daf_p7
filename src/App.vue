@@ -16,15 +16,36 @@ import { useStore } from 'vuex';
 import { useRoute, useRouter } from 'vue-router';
 import HomeMap from './views/HomeMap.vue';
 import EventBus from '@/EventBus';
-// UpdateminMax + addNewRating
+
+// + addNewRating
+
+const minRate = ref(0);
+const maxRate = ref(5);
+
+/**
+ * @function updateMinMax Is called when the user changes the min or max rate.
+ * It updates minRate and maxRate.
+ *
+ * @param {object} settings details of update
+ * @param {('min'|'max')} settings.type type of update
+ * @param {number} settings.value new value
+ *
+ * @returns {void}
+ */
+function updateMinMax({ type, value }) {
+  if (type === 'min') {
+    minRate.value = value;
+    return;
+  }
+  maxRate.value = value;
+}
+
 export default {
   components: { HomeMap },
   setup() {
     const router = useRouter();
     const route = useRoute();
     const store = useStore();
-    const minRate = ref(0);
-    const maxRate = ref(5);
     let restaurantsFiltered;
 
     const restaurant = reactive({
@@ -35,24 +56,6 @@ export default {
       lat: '',
       long: '',
     });
-
-    /**
-     * @function updateMinMax Is called when the user changes the min or max rate.
-     * It updates minRate and maxRate.
-     *
-     * @param {object} settings details of update
-     * @param {('min'|'max')} settings.type type of update
-     * @param {number} settings.value new value
-     *
-     * @returns {void}
-     */
-    function updateMinMax({ type, value }) {
-      if (type === 'min') {
-        minRate.value = value;
-        return;
-      }
-      maxRate.value = value;
-    }
 
     function refreshData(id) { // TODO: Remove refreshData
       const restaurantsList = computed(() => store.state.restaurantsList);
@@ -105,9 +108,9 @@ export default {
     EventBus.on('submitReview', addNewRating);
 
     function addNewRestaurant(restaurantObject) {
-      console.log(restaurantObject);
-      console.log(restaurantObject.lat, restaurantObject.long);
       store.dispatch('addRestaurant', restaurantObject);
+      // refreshData(route.params.id); ?
+      router.push({ name: 'Home' });
     }
 
     EventBus.on('submitNewRestaurant', addNewRestaurant);

@@ -59,7 +59,6 @@ export default ({
       };
       EventBus.emit('submitNewRestaurant', restaurantObject);
     };
-    // emit
 
     return {
       name,

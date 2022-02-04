@@ -29,11 +29,8 @@ export default ({
     const { data } = toRefs(props);
     const comment = ref('');
     const stars = ref(1);
-    // emit restaurant added
 
     const submitReview = () => {
-      // const comment = document.getElementsByClassName('comment')[0].value;
-      // const stars = Number(document.getElementsByClassName('stars')[0].value);
       let rating;
       if (comment.value.length > 0 && typeof stars.value === 'number' && stars.value >= 1 && stars.value <= 5) {
         rating = {
