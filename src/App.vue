@@ -36,6 +36,16 @@ export default {
       long: '',
     });
 
+    /**
+     * @function updateMinMax Is called when the user changes the min or max rate.
+     * It updates minRate and maxRate.
+     *
+     * @param {object} settings details of update
+     * @param {('min'|'max')} settings.type type of update
+     * @param {number} settings.value new value
+     *
+     * @returns {void}
+     */
     function updateMinMax({ type, value }) {
       if (type === 'min') {
         minRate.value = value;
@@ -93,6 +103,14 @@ export default {
     }
 
     EventBus.on('submitReview', addNewRating);
+
+    function addNewRestaurant(restaurantObject) {
+      console.log(restaurantObject);
+      console.log(restaurantObject.lat, restaurantObject.long);
+      store.dispatch('addRestaurant', restaurantObject);
+    }
+
+    EventBus.on('submitNewRestaurant', addNewRestaurant);
 
     return {
       data,

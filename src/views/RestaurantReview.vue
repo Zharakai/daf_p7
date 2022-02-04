@@ -8,8 +8,8 @@
      <h1>{{ restaurant.restaurantName }}</h1>
      <form action="review" onsubmit="return false" @submit.prevent="submitReview()">
        <label for="rating">Note</label>
-       <input type="number" min="1" max="5" class="stars">
-       <textarea name="" id="" cols="30" rows="10" class="comment"></textarea>
+       <input type="number" min="1" max="5" class="stars" v-model="stars">
+       <textarea name="" id="" cols="30" rows="10" class="comment" v-model="comment"></textarea>
        <button>Envoyer</button>
      </form>
    </div>
@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { toRefs } from 'vue';
+import { toRefs, ref } from 'vue';
 import EventBus from '@/EventBus';
 
 export default ({
@@ -27,20 +27,20 @@ export default ({
   emits: ['submitReview'],
   setup(props) {
     const { data } = toRefs(props);
-    // let redirectAfterValidation; @click="$router.push(`/restaurant/${$route.params.id}`)"
+    const comment = ref('');
+    const stars = ref(1);
     // emit restaurant added
 
     const submitReview = () => {
-      const comment = document.getElementsByClassName('comment')[0].value;
-      const stars = Number(document.getElementsByClassName('stars')[0].value);
+      // const comment = document.getElementsByClassName('comment')[0].value;
+      // const stars = Number(document.getElementsByClassName('stars')[0].value);
       let rating;
-      if (comment.length > 0 && typeof stars === 'number' && stars >= 1 && stars <= 5) {
+      if (comment.value.length > 0 && typeof stars.value === 'number' && stars.value >= 1 && stars.value <= 5) {
         rating = {
           stars,
           comment,
         };
         EventBus.emit('submitReview', rating);
-        // redirectAfterValidation
       } else {
         alert('Merci de remplir les champs');
       }
@@ -49,6 +49,8 @@ export default ({
     return {
       restaurant: data,
       submitReview,
+      comment,
+      stars,
     };
   },
 });

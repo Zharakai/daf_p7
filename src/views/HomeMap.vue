@@ -61,10 +61,7 @@ export default defineComponent({
 
     function addNewRestaurant(event) {
       if (route.path === '/') {
-        console.log(event.latLng.lat());
-        console.log(event.latLng.lng());
         router.push({
-          // path: `/add_restaurant/${event.latLng.lat()},${event.latLng.lng()}`,
           name: 'AddRestaurant',
           params: {
             lat: event.latLng.lat(),

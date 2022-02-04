@@ -9,10 +9,12 @@ module.exports = {
   parserOptions: {
     parser: 'babel-eslint',
   },
-  extends: ['plugin:vue/vue3-essential', 'airbnb-base'],
-  plugins: ['prettier'],
+  extends: ['plugin:vue/vue3-essential', 'airbnb-base', 'plugin:jsdoc/recommended'],
+  plugins: ['prettier', 'jsdoc'],
   // add your custom rules here
-  rules: {},
+  rules: {
+    'jsdoc/tag-lines': 0,
+  },
   settings: {
     'import/resolver': {
       alias: {

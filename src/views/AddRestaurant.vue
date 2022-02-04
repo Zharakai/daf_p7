@@ -6,9 +6,16 @@
     <img :src="`https://maps.googleapis.com/maps/api/streetview?size=400x200&location=${lat},${lng}&heading=151.78&pitch=-0.76&key=AIzaSyAQvcg7ps3Ca2wFlXQnHIFKbRgWwgOwRvU`">
     <div class="addRestaurantContainer">
       <h1>Ajouter un restaurant</h1>
-      <form action="addRestaurant" onsubmit="return false" @submit.prevent="">
+      <form action="addRestaurant" onsubmit="return false" @submit.prevent="submitNewRestaurant">
        <label for="name">Nom</label>
-       <input type="text" id="name">
+       <input type="text" id="name" v-model="name">
+       <label for="address">Adresse</label>
+       <input type="text" id="address" :value="`${formattedAddress}`" disabled>
+       <!-- v-model // :value="`${formattedAddress}`" -->
+       <label for="lat">Latitude</label>
+       <input type="text" id="lat" :value="`${lat}`" disabled> <!-- v-model // :value="`${lat}`" -->
+       <label for="lng">Longitude</label>
+       <input type="text" id="lng" :value="`${lng}`" disabled><!-- v-model / :value="`${lng}`"-->
        <button>Envoyer</button>
       </form>
     </div>
@@ -16,33 +23,50 @@
 </template>
 
 <script>
+import { ref } from 'vue';
 import { useRoute } from 'vue-router';
+import EventBus from '@/EventBus';
 
 export default ({
   props: {
   },
   setup() {
     const route = useRoute();
-    const { lat } = route.params;
-    const { lng } = route.params;
-    // console.log(route.params);
+    const { lat } = route.params; // ref
+    const { lng } = route.params; // ref
+    const formattedAddress = ref('');
+    const name = ref('');
+
     async function fetchAddress() {
       try {
-        // "formatted_address" : "57 Imp. Jacquard, 34170 Castelnau-le-Lez, France",
         const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=AIzaSyAQvcg7ps3Ca2wFlXQnHIFKbRgWwgOwRvU`);
-        const test = await response.json();
-        console.log(test);
+        const jsonResponse = await response.json();
+        formattedAddress.value = jsonResponse.results[0].formatted_address;
       } catch (error) {
         console.error(error);
       }
     }
 
     fetchAddress();
-    // console.log(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=AIzaSyAQvcg7ps3Ca2wFlXQnHIFKbRgWwgOwRvU`);
+
+    const submitNewRestaurant = () => {
+      const restaurantObject = {
+        restaurantName: name.value,
+        address: formattedAddress.value,
+        lat: Number(lat),
+        long: Number(lng),
+        ratings: [],
+      };
+      EventBus.emit('submitNewRestaurant', restaurantObject);
+    };
+    // emit
 
     return {
+      name,
       lat,
       lng,
+      formattedAddress,
+      submitNewRestaurant,
     };
   },
 });
