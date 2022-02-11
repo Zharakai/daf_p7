@@ -1,4 +1,5 @@
 import { createStore } from 'vuex';
+import { useGapi } from '../gAPI/index';
 
 function getAverageRating(ratings) {
   if (ratings.length === 0) {
@@ -77,6 +78,13 @@ export default createStore({
     /* The fetchRestaurants function fetches the restaurants.json file from the server and then
     dispatches the addRestaurant action for each restaurant in the file. */
     async fetchRestaurants({ dispatch }) {
+      const gapi = useGapi();
+      console.log(gapi);
+      /*
+      gapi.login().then(({ currentUser, client, hasGrantedScopes }) => {
+        console.log({ currentUser, client, hasGrantedScopes });
+      });
+      */
       try {
         const response = await fetch('/restaurants.json');
         const newRestaurants = await response.json();
