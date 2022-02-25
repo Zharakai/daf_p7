@@ -1,4 +1,7 @@
+/* eslint-disable no-restricted-globals */
 import { createStore } from 'vuex';
+
+let gAPI;
 
 function getAverageRating(ratings) {
   if (ratings.length === 0) {
@@ -41,15 +44,9 @@ export default createStore({
       currentRestaurant.average = getAverageRating(currentRestaurant.ratings);
     },
 
-    GET_GOOGLE_API(state, gAPI) {
-      // console.log(gAPI);
-      // eslint-disable-next-line no-param-reassign
-      state.gAPI = gAPI;
-      console.log(state);
+    GET_RESTAURANTS_NEAR(state, mapRef) {
+      gAPI = mapRef.value.api;
 
-      // console.log(state.gAPI.Map.LatLng(-33.8665433, 151.1956316));
-
-      /*
       const request = {
         location: { lat: 43.64610733307561, lng: 3.8782822539062334 },
         radius: '1500',
@@ -57,18 +54,46 @@ export default createStore({
       };
 
       function callback(results, status) {
-        console.log(status);
-        if (status === state.gAPI.places.PlacesServiceStatus.OK) {
-          console.log(results);
-          console.log(results.length);
+        if (status === gAPI.places.PlacesServiceStatus.OK) {
+          // eslint-disable-next-line no-param-reassign
+          state.restaurantsList = results;
         }
       }
 
-      console.log(request);
+      const PlacesService = new gAPI.places.PlacesService(document.createElement('div'));
+      PlacesService.nearbySearch(request, callback);
+    },
 
-      console.log(state.gAPI.places.PlacesServiceStatus);
-      console.log(state.gAPI.places.PlacesService.prototype.nearbySearch(request, callback));
-      */
+    GET_PLACES_DETAILS(state, restaurantsList) {
+      const formattedRestaurantsList = [];
+
+      restaurantsList.forEach((restaurant) => {
+        const request = {
+          placeId: restaurant.place_id,
+          fields: ['name', 'rating', 'photos', 'geometry', 'formatted_address', 'review'],
+        };
+
+        setTimeout(() => {
+          function callback(place, status) {
+            if (status === gAPI.places.PlacesServiceStatus.OK) {
+              formattedRestaurantsList.push(place);
+            } else {
+              console.log(status);
+            }
+          }
+
+          // setTimeout(() => {
+          const PlacesService = new gAPI.places.PlacesService(document.createElement('div'));
+          PlacesService.getDetails(request, callback);
+        }, 700);
+      });
+
+      // eslint-disable-next-line no-param-reassign
+      state.formattedRestaurantsList = formattedRestaurantsList;
+    },
+
+    TEST(/* state */) {
+      // console.log(state);
     },
   },
 
@@ -104,51 +129,20 @@ export default createStore({
       }
     },
 
-    test({ state }) {
-      console.log(state.position);
+    test({ commit /* , state */ }) {
+      commit('TEST');
+      // console.log(state.position);
+      // console.log(state);
       // eslint-disable-next-line no-undef
       // console.log(state.position);
     },
     /* The fetchRestaurants function fetches the restaurants.json file from the server and then
     dispatches the addRestaurant action for each restaurant in the file. */
-    async fetchRestaurants(/* { dispatch } */) {
-      // console.log(commit('GET_GOOGLE_API', state.gAPI));
-      // console.log(state.gAPI);
-      // const places = new client.maps.places.PlaceService();
-      // console.log(places);
-
-      /*
-      const gapi = useGapi();
-      const client = await gapi.getGapiClient();
-      console.log(client.client.load('places'));
-      console.log(client.map.places);
-      // console.log(gapi.getGapiClient());
-      console.log(gapi.clientProvider.clientConfig.discoveryDocs[0]);
-      */
-
-      /*
-      gapi.login().then(({ currentUser, client, hasGrantedScopes }) => {
-        console.log({ currentUser, client, hasGrantedScopes });
-      });
-      */
-      /*
-      const myHeaders = new Headers({
-        'Access-Control-Allow-Origin': '*',
-        // 'Access-Control-Allow-Origin': 'http://localhost:8080',
-        'Content-Type': 'text/plain',
-        'X-Custom-Header': 'ProcessThisImmediately',
-        'Access-Control-Allow-Methods': 'GET',
-      });
-
-      const myInit = {
-        method: 'GET',
-        headers: myHeaders,
-        mode: 'cors',
-        cache: 'default',
-      };
-      */
+    async fetchRestaurants(/* state, { dispatch } */) {
+      // console.log(state.restaurantsList);
 
       try {
+        // console.log(state);
         /*
         const test = await fetch('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=43.66358318187707,3.8876292886718566&radius=1500&type=restaurant&key=AIzaSyAQvcg7ps3Ca2wFlXQnHIFKbRgWwgOwRvU');
         const newTest = await test.json();
@@ -165,6 +159,10 @@ export default createStore({
       } catch (error) {
         console.error(error);
       }
+    },
+
+    getPlacesDetails({ commit }, restaurantsList) {
+      commit('GET_PLACES_DETAILS', restaurantsList);
     },
 
     /*

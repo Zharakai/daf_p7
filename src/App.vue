@@ -57,6 +57,12 @@ export default {
       long: '',
     });
 
+    // Watch when restaurants are stored
+    watch(() => store.state.restaurantsList, () => {
+      const { restaurantsList } = store.state;
+      store.dispatch('getPlacesDetails', restaurantsList);
+    });
+
     function refreshData(id) { // TODO: Remove refreshData
       const restaurantsList = computed(() => store.state.restaurantsList);
       if (!id) {
@@ -109,7 +115,6 @@ export default {
 
     function addNewRestaurant(restaurantObject) {
       store.dispatch('addRestaurant', restaurantObject);
-      // refreshData(route.params.id); ?
       router.push({ name: 'Home' });
     }
 

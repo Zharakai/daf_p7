@@ -50,7 +50,8 @@ export default defineComponent({
   props: {
     data: { type: Object },
   },
-  emits: ['gAPI'],
+  /* emits: ['gAPI', 'mapRef'], */
+  emits: ['mapRef'],
   setup(props) {
     const mapRef = ref(null);
     const store = useStore();
@@ -79,18 +80,18 @@ export default defineComponent({
     onMounted(() => {
       watch(() => mapRef.value.ready, (isReady) => {
         if (!isReady) return;
-        const gAPI = mapRef.value.api;
+        // const gAPI = mapRef.value.api;
+        // console.log(mapRef);
+        store.commit('GET_RESTAURANTS_NEAR', mapRef);
         // console.log(gAPI);
-        store.commit('GET_GOOGLE_API', gAPI);
+        // store.commit('GET_RESTAURANTS_NEAR', gAPI);
         // EventBus.emit('gAPI', gAPI);
+        // store.dispatch('fetchRestaurants');
       });
-
       // console.log(mapRef.value.map);
       // console.log(store.state.gAPI);
       // console.log(position.value);
     });
-    // console.log(position.value);
-    console.log(data);
 
     // Test emit move map
     function mapCenter() {
