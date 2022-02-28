@@ -43,14 +43,12 @@ import {
 import { useRoute, useRouter } from 'vue-router';
 import { GoogleMap, Marker } from 'vue3-google-map';
 import { useStore } from 'vuex';
-// import EventBus from '@/EventBus';
 
 export default defineComponent({
   components: { GoogleMap, Marker },
   props: {
     data: { type: Object },
   },
-  /* emits: ['gAPI', 'mapRef'], */
   emits: ['mapRef'],
   setup(props) {
     const mapRef = ref(null);
@@ -58,12 +56,12 @@ export default defineComponent({
     const route = useRoute();
     const router = useRouter();
     const { data } = toRefs(props);
-    // const gAPItest = ref();
+    console.log(data);
 
     store.dispatch('getLocation');
     const position = computed(() => store.state.position);
 
-    store.dispatch('fetchRestaurants');
+    // store.dispatch('fetchRestaurants');
 
     function addNewRestaurant(event) {
       if (route.path === '/') {
@@ -80,26 +78,15 @@ export default defineComponent({
     onMounted(() => {
       watch(() => mapRef.value.ready, (isReady) => {
         if (!isReady) return;
-        // const gAPI = mapRef.value.api;
-        // console.log(mapRef);
-        store.commit('GET_RESTAURANTS_NEAR', mapRef);
-        // console.log(gAPI);
-        // store.commit('GET_RESTAURANTS_NEAR', gAPI);
-        // EventBus.emit('gAPI', gAPI);
-        // store.dispatch('fetchRestaurants');
+        // store.commit('GET_RESTAURANTS_NEAR', mapRef);
+        store.dispatch('getRestaurantsNear', mapRef);
       });
-      // console.log(mapRef.value.map);
-      // console.log(store.state.gAPI);
-      // console.log(position.value);
     });
 
-    // Test emit move map
     function mapCenter() {
       console.log(mapRef.value.map.center.lat());
       console.log(mapRef.value.map.center.lng());
     }
-
-    store.dispatch('test');
 
     // TODO: Couleur spécifique pour le marqueur de la position utilisateur
     const markerOptions = computed(() => ({ position: position.value, label: 'JH', title: 'Just Here' }));

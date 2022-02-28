@@ -11,11 +11,10 @@
        <input type="text" id="name" v-model="name">
        <label for="address">Adresse</label>
        <input type="text" id="address" :value="`${formattedAddress}`" disabled>
-       <!-- v-model // :value="`${formattedAddress}`" -->
        <label for="lat">Latitude</label>
-       <input type="text" id="lat" :value="`${lat}`" disabled> <!-- v-model // :value="`${lat}`" -->
+       <input type="text" id="lat" :value="`${lat}`" disabled>
        <label for="lng">Longitude</label>
-       <input type="text" id="lng" :value="`${lng}`" disabled><!-- v-model / :value="`${lng}`"-->
+       <input type="text" id="lng" :value="`${lng}`" disabled>
        <button>Envoyer</button>
       </form>
     </div>

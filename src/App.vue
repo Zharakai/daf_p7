@@ -17,8 +17,6 @@ import { useRoute, useRouter } from 'vue-router';
 import HomeMap from './views/HomeMap.vue';
 import EventBus from '@/EventBus';
 
-// + addNewRating
-
 const minRate = ref(0);
 const maxRate = ref(5);
 
@@ -63,16 +61,22 @@ export default {
       store.dispatch('getPlacesDetails', restaurantsList);
     });
 
-    function refreshData(id) { // TODO: Remove refreshData
+    function refreshData(id) {
       const restaurantsList = computed(() => store.state.restaurantsList);
+      // console.log(restaurantsList);
+      // console.log(id);
       if (!id) {
         // eslint-disable-next-line arrow-body-style
-        restaurantsFiltered = computed(() => restaurantsList.value.filter(({ average }) => {
-          return average >= minRate.value && average <= maxRate.value;
+        restaurantsFiltered = computed(() => restaurantsList.value.filter(({ rating }) => {
+          // console.log(restaurantsList.value);
+          console.log(minRate.value, maxRate.value);
+          return rating >= minRate.value && rating <= maxRate.value;
         }));
+        // console.log(restaurantsFiltered);
 
         EventBus.on('updateFilter', updateMinMax);
       } else {
+        console.log('coucou else');
         const matchingRestaurant = restaurantsList.value.find(
           ({ restaurantName }) => restaurantName === id,
         );
