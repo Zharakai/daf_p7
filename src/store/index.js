@@ -73,10 +73,8 @@ export default createStore({
      * array.
      */
     addRestaurant({ commit, state }, newRestaurant) {
-      // console.log(newRestaurant);
       // eslint-disable-next-line max-len
       const restaurantExist = state.restaurantsList.find((restaurant) => restaurant.name === newRestaurant.name);
-      // console.log(restaurantExist);
       if (!restaurantExist) {
         commit('ADD_RESTAURANT', newRestaurant);
       }
@@ -86,18 +84,14 @@ export default createStore({
       gAPI = mapRef.value.api;
       const PlacesService = new gAPI.places.PlacesService(document.createElement('div'));
 
-      // console.log(state.position);
-      // console.log(mapRef.value.map.center.lat(), mapRef.value.map.center.lng());
       const request = {
         location: { lat: 43.64610733307561, lng: 3.8782822539062334 },
         radius: '1500',
         type: ['restaurant'],
       };
 
-      // const PlacesService = new gAPI.places.PlacesService(document.createElement('div'));
       PlacesService.nearbySearch(request, (results, status) => {
         if (status === gAPI.places.PlacesServiceStatus.OK) {
-          // console.log(results);
           results.forEach((restaurant, index) => {
             // eslint-disable-next-line max-len
             const restaurantExist = state.restaurantsList.find((existingRestaurant) => existingRestaurant.name === restaurant.name);
@@ -112,8 +106,6 @@ export default createStore({
               PlacesService.getDetails(requestDetails, (place, statusDetails) => {
                 if (statusDetails === gAPI.places.PlacesServiceStatus.OK) {
                   commit('ADD_RESTAURANT', place);
-                  console.log(place);
-                  // dispatch('addRestaurant', place);
                 } else {
                   console.log(status);
                 }
@@ -123,30 +115,5 @@ export default createStore({
         }
       });
     },
-
-    /*
-    getPlacesDetails({ dispatch }, restaurantsList) {
-      const PlacesService = new gAPI.places.PlacesService(document.createElement('div'));
-
-      restaurantsList.forEach((restaurant, index) => {
-        const request = {
-          placeId: restaurant.place_id,
-          fields: ['name', 'rating', 'photos', 'geometry', 'formatted_address', 'reviews'],
-        };
-
-        setTimeout(() => {
-          function callback(place, status) {
-            if (status === gAPI.places.PlacesServiceStatus.OK) {
-              // commit('ADD_RESTAURANT', place);
-              dispatch('addRestaurant', place);
-            } else {
-              console.log(status);
-            }
-          }
-          PlacesService.getDetails(request, callback);
-        }, 300 * index);
-      });
-    },
-    */
   },
 });
