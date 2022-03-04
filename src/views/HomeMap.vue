@@ -5,7 +5,7 @@
       api-key="AIzaSyAQvcg7ps3Ca2wFlXQnHIFKbRgWwgOwRvU"
       style="width: 100%; height: 100vh;"
       :center="position"
-      :zoom="11"
+      :zoom="12"
       @click="addNewRestaurant"
       @dragend="mapCenter">
       <Marker

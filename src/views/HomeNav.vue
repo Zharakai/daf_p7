@@ -44,7 +44,11 @@
           <router-link :to="{ name: 'Restaurant', params: { id: restaurant.name }}">
             <div>
               <p><i class="fas fa-utensils"></i>{{ restaurant.name }}</p>
-              <p><i class="fas fa-star"></i>{{ restaurant.rating }}</p>
+              <p>
+                <i class="fas fa-star"></i>
+                {{ restaurant.rating }}
+                <span class="userRatingsTotal">({{ restaurant.user_ratings_total }} avis)</span>
+              </p>
               <p><i class="fas fa-map-marker"></i>{{ restaurant.formatted_address }}</p>
             </div>
           </router-link>
@@ -107,6 +111,10 @@ export default {
     .inputMin {
       margin: 0 1% 0 0;
     }
+  }
+  .userRatingsTotal {
+    color: #6f6f6f;
+    font-size: 0.8em;
   }
 }
 </style>

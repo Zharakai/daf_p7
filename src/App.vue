@@ -47,11 +47,12 @@ export default {
     let restaurantsFiltered;
 
     const restaurant = reactive({
-      restaurantName: '',
-      address: '',
-      ratings: [],
-      average: 0,
+      name: '',
+      formatted_address: '',
+      reviews: [],
+      rating: 0,
       geometry: {},
+      user_ratings_total: 0,
     });
 
     // Watch when restaurants are stored
@@ -64,28 +65,24 @@ export default {
 
     function refreshData(id) {
       const restaurantsList = computed(() => store.state.restaurantsList);
-      // console.log(restaurantsList);
-      // console.log(id);
+
       if (!id) {
         // eslint-disable-next-line arrow-body-style
         restaurantsFiltered = computed(() => restaurantsList.value.filter(({ rating }) => {
-          // console.log(restaurantsList.value);
-          console.log(minRate.value, maxRate.value);
           return rating >= minRate.value && rating <= maxRate.value;
         }));
-        // console.log(restaurantsFiltered);
 
         EventBus.on('updateFilter', updateMinMax);
       } else {
-        console.log('coucou else');
         const matchingRestaurant = restaurantsList.value.find(
           ({ name }) => name === id,
         );
         restaurant.name = matchingRestaurant.name;
-        restaurant.vicinity = matchingRestaurant.vicinity;
-        restaurant.ratings = matchingRestaurant.ratings;
-        restaurant.geometry = matchingRestaurant.lat;
+        restaurant.formatted_address = matchingRestaurant.formatted_address;
+        restaurant.reviews = matchingRestaurant.reviews;
+        restaurant.geometry = matchingRestaurant.geometry;
         restaurant.rating = matchingRestaurant.rating;
+        // restaurant.user_ratings_total = matchingRestaurant.restaurant.user_ratings_total;
       }
     }
 
@@ -144,8 +141,9 @@ body {
   height: 100vh;
 }
 #nav {
-  width: 400px;
-  overflow: auto;
+  width: 417px;
+  overflow-y: scroll;
+  // overflow: auto;
   a {
     font-weight: bold;
     color: #2c3e50;
@@ -197,6 +195,6 @@ main {
   height: 100%;
 }
 .home {
-  width: calc(100vw - 400px);
+  width: calc(100vw - 417px);
 }
 </style>

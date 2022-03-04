@@ -72,7 +72,8 @@ export default ({
 
 <style lang="scss">
 .addRestaurant {
-  width: 400px;
+  width: 417px;
+  overflow-y: scroll;
   .back {
     display: flex;
   }

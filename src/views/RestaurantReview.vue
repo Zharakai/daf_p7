@@ -8,8 +8,8 @@
      <h1>{{ restaurant.name }}</h1>
      <form action="review" onsubmit="return false" @submit.prevent="submitReview()">
        <label for="rating">Note</label>
-       <input type="number" min="1" max="5" class="stars" v-model="stars">
-       <textarea name="" id="" cols="30" rows="10" class="comment" v-model="comment"></textarea>
+       <input type="number" min="1" max="5" class="stars" v-model="rating">
+       <textarea name="" id="" cols="30" rows="10" class="comment" v-model="text"></textarea>
        <button>Envoyer</button>
      </form>
    </div>
@@ -27,17 +27,17 @@ export default ({
   emits: ['submitReview'],
   setup(props) {
     const { data } = toRefs(props);
-    const comment = ref('');
-    const stars = ref(1);
+    const text = ref('');
+    const rating = ref(1);
 
     const submitReview = () => {
-      let rating;
-      if (comment.value.length > 0 && typeof stars.value === 'number' && stars.value >= 1 && stars.value <= 5) {
-        rating = {
-          stars,
-          comment,
+      let review;
+      if (text.value.length > 0 && typeof rating.value === 'number' && rating.value >= 1 && rating.value <= 5) {
+        review = {
+          rating,
+          text,
         };
-        EventBus.emit('submitReview', rating);
+        EventBus.emit('submitReview', review);
       } else {
         alert('Merci de remplir les champs');
       }
@@ -46,8 +46,8 @@ export default ({
     return {
       restaurant: data,
       submitReview,
-      comment,
-      stars,
+      text,
+      rating,
     };
   },
 });
@@ -55,7 +55,8 @@ export default ({
 
 <style lang="scss">
 .restaurantReview {
-  width: 400px;
+  width: 417px;
+  overflow-y: scroll;
   .back {
     display: flex;
   }

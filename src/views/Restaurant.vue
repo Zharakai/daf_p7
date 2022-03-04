@@ -2,18 +2,22 @@
   <div class="selectedRestaurant">
     <router-link to="/" class="back" aria-label="Retour" title="Retour"></router-link>
     <div>
-        <img :src="`https://maps.googleapis.com/maps/api/streetview?size=400x200&location=${restaurant.lat},${restaurant.long}&heading=151.78&pitch=-0.76&key=AIzaSyAQvcg7ps3Ca2wFlXQnHIFKbRgWwgOwRvU`">
-        <h1><i class="fas fa-utensils"></i>{{ restaurant.restaurantName }}</h1>
-        <p><i class="fas fa-star"></i>{{ restaurant.average }}</p>
-        <p><i class="fas fa-map-marker"></i>{{ restaurant.address }}</p>
+        <img :src="`https://maps.googleapis.com/maps/api/streetview?size=400x200&location=${restaurant.geometry.location.lat()},${restaurant.geometry.location.lng()}&heading=151.78&pitch=-0.76&key=AIzaSyAQvcg7ps3Ca2wFlXQnHIFKbRgWwgOwRvU`">
+        <h1><i class="fas fa-utensils"></i>{{ restaurant.name }}</h1>
+        <p>
+          <i class="fas fa-star"></i>
+          {{ restaurant.rating }}
+          <span class="userRatingsTotal">({{ restaurant.user_ratings_total }} avis)</span>
+        </p>
+        <p><i class="fas fa-map-marker"></i>{{ restaurant.formatted_address }}</p>
         <router-link :to="{
           name: 'RestaurantReview',
           params: { id: $route.params.id }}">
           Rédiger un avis
         </router-link>
-        <p v-for="rating in restaurant.ratings" :key="rating.comment">
-          <i class="fas fa-star"></i>{{ rating.stars}}<br>
-          {{ rating.comment }}
+        <p v-for="review in restaurant.reviews" :key="review.text">
+          <i class="fas fa-star"></i>{{ review.rating}}<br>
+          {{ review.text }}
         </p>
     </div>
   </div>
@@ -36,8 +40,9 @@ export default ({
 
 <style lang="scss">
 .selectedRestaurant {
-  width: 400px;
-  overflow: auto;
+  width: 417px;
+  overflow-y: scroll;
+  // overflow: auto;
   a {
     text-decoration: none;
     display: flex;
