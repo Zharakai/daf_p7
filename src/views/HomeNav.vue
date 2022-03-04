@@ -40,12 +40,12 @@
       <ul>
         <li
           v-for="restaurant in restaurants"
-          :key="restaurant.restaurantName">
-          <router-link :to="{ name: 'Restaurant', params: { id: restaurant.restaurantName }}">
+          :key="restaurant.name">
+          <router-link :to="{ name: 'Restaurant', params: { id: restaurant.name }}">
             <div>
-              <p><i class="fas fa-utensils"></i>{{ restaurant.restaurantName }}</p>
-              <p><i class="fas fa-star"></i>{{ restaurant.average }}</p>
-              <p><i class="fas fa-map-marker"></i>{{ restaurant.address }}</p>
+              <p><i class="fas fa-utensils"></i>{{ restaurant.name }}</p>
+              <p><i class="fas fa-star"></i>{{ restaurant.rating }}</p>
+              <p><i class="fas fa-map-marker"></i>{{ restaurant.formatted_address }}</p>
             </div>
           </router-link>
         </li>

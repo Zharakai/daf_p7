@@ -51,15 +51,16 @@ export default {
       address: '',
       ratings: [],
       average: 0,
-      lat: '',
-      long: '',
+      geometry: {},
     });
 
     // Watch when restaurants are stored
+    /*
     watch(() => store.state.restaurantsList, () => {
       const { restaurantsList } = store.state;
       store.dispatch('getPlacesDetails', restaurantsList);
     });
+    */
 
     function refreshData(id) {
       const restaurantsList = computed(() => store.state.restaurantsList);
@@ -78,14 +79,13 @@ export default {
       } else {
         console.log('coucou else');
         const matchingRestaurant = restaurantsList.value.find(
-          ({ restaurantName }) => restaurantName === id,
+          ({ name }) => name === id,
         );
-        restaurant.restaurantName = matchingRestaurant.restaurantName;
-        restaurant.address = matchingRestaurant.address;
+        restaurant.name = matchingRestaurant.name;
+        restaurant.vicinity = matchingRestaurant.vicinity;
         restaurant.ratings = matchingRestaurant.ratings;
-        restaurant.lat = matchingRestaurant.lat;
-        restaurant.long = matchingRestaurant.long;
-        restaurant.average = matchingRestaurant.average;
+        restaurant.geometry = matchingRestaurant.lat;
+        restaurant.rating = matchingRestaurant.rating;
       }
     }
 

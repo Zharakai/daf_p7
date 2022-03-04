@@ -3,9 +3,9 @@
    <router-link :to="`/restaurant/${$route.params.id}`" class="back" aria-label="Retour"
    title="Retour">
    </router-link>
-   <img :src="`https://maps.googleapis.com/maps/api/streetview?size=400x200&location=${restaurant.lat},${restaurant.long}&heading=151.78&pitch=-0.76&key=AIzaSyAQvcg7ps3Ca2wFlXQnHIFKbRgWwgOwRvU`">
+   <img :src="`https://maps.googleapis.com/maps/api/streetview?size=400x200&location=${restaurant.geometry.location.lat()},${restaurant.geometry.location.lng()}&heading=151.78&pitch=-0.76&key=AIzaSyAQvcg7ps3Ca2wFlXQnHIFKbRgWwgOwRvU`">
    <div class="containerReview">
-     <h1>{{ restaurant.restaurantName }}</h1>
+     <h1>{{ restaurant.name }}</h1>
      <form action="review" onsubmit="return false" @submit.prevent="submitReview()">
        <label for="rating">Note</label>
        <input type="number" min="1" max="5" class="stars" v-model="stars">

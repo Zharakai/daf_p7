@@ -1,33 +1,40 @@
 <template>
   <div class="home">
     <GoogleMap
-    ref="mapRef"
-    api-key="AIzaSyAQvcg7ps3Ca2wFlXQnHIFKbRgWwgOwRvU"
-    style="width: 100%; height: 100vh;"
-    :center="position"
-    :zoom="11"
-    @click="addNewRestaurant"
-    @dragend="mapCenter">
-    <Marker
-      :options="markerOptions"
-      icon="http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
-    />
-    <!--
-      Check if data is a list of restaurants or a restaurant
-      by checking if property restaurantName exists
-    -->
-    <Marker
-      v-if="data.restaurantName"
-      :key="data.restaurantName"
-      :options="{ position: { lat: data.lat, lng: data.long } }"
-    />
-    <Marker
-      v-else
-      v-for="restaurant in restaurants"
-      :key="restaurant.name"
-      :options="{ position: { lat: restaurant.lat, lng: restaurant.long } }"
-    />
-  </GoogleMap>
+      ref="mapRef"
+      api-key="AIzaSyAQvcg7ps3Ca2wFlXQnHIFKbRgWwgOwRvU"
+      style="width: 100%; height: 100vh;"
+      :center="position"
+      :zoom="11"
+      @click="addNewRestaurant"
+      @dragend="mapCenter">
+      <Marker
+        :options="markerOptions"
+        icon="http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+      />
+      <!--
+        Check if data is a list of restaurants or a restaurant
+        by checking if property restaurantName exists
+      -->
+      <Marker
+        v-if="data.restaurantName"
+        :key="data.restaurantName"
+        :options="{ position: { lat: data.lat, lng: data.long } }"
+      />
+      <Marker
+        v-else
+        v-for="restaurant in restaurants"
+        :key="restaurant.name"
+        :options="{ position: {
+          lat: restaurant.geometry.location.lat(),
+          lng: restaurant.geometry.location.lng()
+          }
+        }"
+      />
+    </GoogleMap>
+    <button class="findInAreaBtn" aria-label="Rechercher dans cette zone">
+      Rechercher dans cette zone
+    </button>
   </div>
 </template>
 
@@ -102,3 +109,11 @@ export default defineComponent({
   },
 });
 </script>
+
+<style lang="scss">
+.findInAreaBtn {
+  position: absolute;
+  top : 10px;
+  right: 10%;
+}
+</style>
