@@ -50,11 +50,15 @@ export default ({
 
     const submitNewRestaurant = () => {
       const restaurantObject = {
-        restaurantName: name.value,
-        address: formattedAddress.value,
-        lat: Number(lat),
-        long: Number(lng),
-        ratings: [],
+        name: name.value,
+        formatted_address: formattedAddress.value,
+        geometry: {
+          location: {
+            lat: Number(lat),
+            lng: Number(lng),
+          },
+        },
+        reviews: [],
       };
       EventBus.emit('submitNewRestaurant', restaurantObject);
     };

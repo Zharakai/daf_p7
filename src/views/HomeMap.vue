@@ -84,6 +84,7 @@ export default defineComponent({
 
     onMounted(() => {
       watch(() => mapRef.value.ready, (isReady) => {
+        console.log(mapRef.value);
         if (!isReady) return;
         // store.commit('GET_RESTAURANTS_NEAR', mapRef);
         store.dispatch('getRestaurantsNear', mapRef);
@@ -96,7 +97,15 @@ export default defineComponent({
     }
 
     // TODO: Couleur spécifique pour le marqueur de la position utilisateur
-    const markerOptions = computed(() => ({ position: position.value, label: 'JH', title: 'Just Here' }));
+    const markerOptions = computed(() => ({
+      icon: {
+        url: 'https://www.seekpng.com/png/full/18-180376_bluemapicon-blue-google-maps-marker.png',
+        scaledSize: { width: 27, height: 43 },
+        labelOrigin: { x: 16, y: -10 },
+      },
+      position: position.value,
+      title: 'Just Here',
+    }));
 
     return {
       position,
