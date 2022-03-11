@@ -6,15 +6,14 @@
       style="width: 100%; height: 100vh;"
       :center="position"
       :zoom="13"
-      @click="addNewRestaurant"
-      @dragend="mapCenter">
+      @click="addNewRestaurant">
       <Marker
         :options="markerOptions"
         icon="http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
       />
       <!--
         Check if data is a list of restaurants or a restaurant
-        by checking if property restaurantName exists
+        by checking if property name exists
       -->
       <Marker
         v-if="data.name"
@@ -23,21 +22,24 @@
           position: {
             lat: data.geometry.location.lat(),
             lng: data.geometry.location.lng(),
-          }
+          },
+          title: data.name
         }"
       />
       <Marker
         v-else
         v-for="restaurant in restaurants"
         :key="restaurant.name"
-        :options="{ position: {
-          lat: restaurant.geometry.location.lat(),
-          lng: restaurant.geometry.location.lng()
-          }
+        :options="{
+          position: {
+            lat: restaurant.geometry.location.lat(),
+            lng: restaurant.geometry.location.lng()
+          },
+          title: restaurant.name
         }"
       />
     </GoogleMap>
-    <button class="findInAreaBtn" aria-label="Rechercher dans cette zone">
+    <button class="findInAreaBtn" aria-label="Rechercher dans cette zone" @click="mapCenter">
       Rechercher dans cette zone
     </button>
   </div>
@@ -68,7 +70,6 @@ export default defineComponent({
     const route = useRoute();
     const router = useRouter();
     const { data } = toRefs(props);
-    // console.log(data.name);
 
     store.dispatch('getLocation');
     const position = computed(() => store.state.position);
@@ -89,9 +90,7 @@ export default defineComponent({
 
     onMounted(() => {
       watch(() => mapRef.value.ready, (isReady) => {
-        // console.log(mapRef.value);
         if (!isReady) return;
-        // store.commit('GET_RESTAURANTS_NEAR', mapRef);
         store.dispatch('getRestaurantsNear', mapRef);
       });
     });
@@ -105,9 +104,8 @@ export default defineComponent({
 
     const markerOptions = computed(() => ({
       icon: {
-        url: 'https://www.seekpng.com/png/full/18-180376_bluemapicon-blue-google-maps-marker.png',
+        url: 'https://svg-clipart.com/svg/black/1XsU4IU-blue-marker-black-border-fit-vector.svg',
         scaledSize: { width: 27, height: 43 },
-        // labelOrigin: { x: 16, y: -10 },
       },
       position: store.state.userPosition,
       title: 'Just Here',
@@ -128,7 +126,17 @@ export default defineComponent({
 <style lang="scss">
 .findInAreaBtn {
   position: absolute;
-  top : 10px;
-  right: 10%;
+  top: 10px;
+  background-color: rgb(255, 255, 255);
+  border: none;
+  height: 40px;
+  padding: 0 17px;
+  box-shadow: rgb(0 0 0 / 30%) 0 1px 4px -1px;
+  font-size: 14px;
+  cursor: pointer;
+  font-family: Roboto, Arial, sans-serif;
+  &:hover {
+    background-color: rgb(235, 235, 235);
+  }
 }
 </style>

@@ -1,4 +1,3 @@
-/* eslint-disable no-restricted-globals */
 import { createStore } from 'vuex';
 
 let gAPI;
@@ -48,9 +47,28 @@ export default createStore({
         return findResult;
       });
 
-      // console.log(currentRestaurant);
+      const userRatingsTotal = currentRestaurant.user_ratings_total;
+      const { rating } = currentRestaurant;
+      const ratingTotal = userRatingsTotal * rating;
+      const newRating = datas.rating.rating.value;
+      console.log(ratingTotal, newRating);
+
+      console.log(currentRestaurant.rating, currentRestaurant.user_ratings_total);
       currentRestaurant.reviews.push(datas.rating);
 
+      currentRestaurant.user_ratings_total += 1;
+
+      const newAverage = (ratingTotal + newRating) / currentRestaurant.user_ratings_total;
+      console.log(Math.round(newAverage));
+      console.log(datas);
+      currentRestaurant.rating = Math.round(newAverage);
+      /*
+      console.log(
+        currentRestaurant.rating,
+        currentRestaurant.user_ratings_total,
+        datas.rating.rating.value,
+      );
+      */
       // currentRestaurant.average = getAverageRating(currentRestaurant.ratings);
     },
 
@@ -103,7 +121,7 @@ export default createStore({
         // eslint-disable-next-line no-param-reassign
         state.PlacesService = new gAPI.places.PlacesService(document.createElement('div'));
       }
-      // gAPI = mapRef.value.api;
+
       const { PlacesService } = state;
       const { lat, lng } = state.position;
 
@@ -115,7 +133,6 @@ export default createStore({
 
       PlacesService.nearbySearch(request, (results, status) => {
         if (status === gAPI.places.PlacesServiceStatus.OK) {
-          // console.log(results);
           results.forEach((restaurant, index) => {
             // eslint-disable-next-line max-len
             const restaurantExist = state.restaurantsList.find((existingRestaurant) => existingRestaurant.name === restaurant.name);

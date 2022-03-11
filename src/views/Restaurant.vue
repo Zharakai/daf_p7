@@ -32,7 +32,6 @@ export default ({
   },
   setup(props) {
     const { data } = toRefs(props);
-    // console.log(data);
 
     return { restaurant: data };
   },
@@ -43,7 +42,6 @@ export default ({
 .selectedRestaurant {
   width: 417px;
   overflow-y: scroll;
-  // overflow: auto;
   a {
     text-decoration: none;
     display: flex;
@@ -57,12 +55,10 @@ export default ({
     h1, p {
       padding: 5px;
     }
-
     i {
       color: #ff9e16;
       margin: 0 5px 0 0;
     }
-
     a {
       border: solid 1px;
       margin: 0 20%;
