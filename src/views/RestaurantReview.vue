@@ -37,6 +37,8 @@ export default ({
           rating,
           text,
         };
+        console.log(data);
+        data.value.user_ratings_total += 1;
         EventBus.emit('submitReview', review);
       } else {
         alert('Merci de remplir les champs');

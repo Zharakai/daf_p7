@@ -29,6 +29,11 @@ export default createStore({
       state.position = pos;
     },
 
+    SET_USER_POSITION(state, pos) {
+      // eslint-disable-next-line no-param-reassign
+      state.userPosition = pos;
+    },
+
     ADD_RESTAURANT(state, newRestaurant) {
       // console.log(newRestaurant);
       // eslint-disable-next-line no-param-reassign
@@ -37,17 +42,19 @@ export default createStore({
     },
 
     ADD_RATING(state, datas) {
-      console.log(datas);
+      // console.log(datas);
       const currentRestaurant = state.restaurantsList.find((restaurant) => {
         const findResult = restaurant.name === datas.currentRestaurant.name;
         return findResult;
       });
 
-      console.log(currentRestaurant);
+      // console.log(currentRestaurant);
       currentRestaurant.reviews.push(datas.rating);
 
       // currentRestaurant.average = getAverageRating(currentRestaurant.ratings);
     },
+
+    // UPDATE_AVERAGE()
   },
 
   actions: {
@@ -62,11 +69,17 @@ export default createStore({
             lng: position.coords.longitude,
           };
           commit('SET_POSITION', pos);
+          commit('SET_USER_POSITION', pos);
         },
         (error) => {
           console.log(error.message);
         },
       );
+    },
+
+    setLocation({ commit, dispatch }, { lat, lng }) {
+      commit('SET_POSITION', { lat, lng });
+      dispatch('getRestaurantsNear');
     },
 
     /**
@@ -82,11 +95,17 @@ export default createStore({
       }
     },
 
+    // addRating()
+
     getRestaurantsNear({ state, commit }, mapRef) {
-      gAPI = mapRef.value.api;
-      const PlacesService = new gAPI.places.PlacesService(document.createElement('div'));
-      const lat = mapRef.value.map.center.lat();
-      const lng = mapRef.value.map.center.lng();
+      if (state.PlacesService === undefined) {
+        gAPI = mapRef.value.api;
+        // eslint-disable-next-line no-param-reassign
+        state.PlacesService = new gAPI.places.PlacesService(document.createElement('div'));
+      }
+      // gAPI = mapRef.value.api;
+      const { PlacesService } = state;
+      const { lat, lng } = state.position;
 
       const request = {
         location: { lat, lng },
@@ -96,7 +115,7 @@ export default createStore({
 
       PlacesService.nearbySearch(request, (results, status) => {
         if (status === gAPI.places.PlacesServiceStatus.OK) {
-          console.log(results);
+          // console.log(results);
           results.forEach((restaurant, index) => {
             // eslint-disable-next-line max-len
             const restaurantExist = state.restaurantsList.find((existingRestaurant) => existingRestaurant.name === restaurant.name);

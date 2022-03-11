@@ -54,11 +54,12 @@ export default ({
         formatted_address: formattedAddress.value,
         geometry: {
           location: {
-            lat: Number(lat),
-            lng: Number(lng),
+            lat: () => Number(lat),
+            lng: () => Number(lng),
           },
         },
         reviews: [],
+        rating: 0,
       };
       EventBus.emit('submitNewRestaurant', restaurantObject);
     };

@@ -5,7 +5,7 @@
       api-key="AIzaSyAQvcg7ps3Ca2wFlXQnHIFKbRgWwgOwRvU"
       style="width: 100%; height: 100vh;"
       :center="position"
-      :zoom="12"
+      :zoom="13"
       @click="addNewRestaurant"
       @dragend="mapCenter">
       <Marker
@@ -17,9 +17,14 @@
         by checking if property restaurantName exists
       -->
       <Marker
-        v-if="data.restaurantName"
-        :key="data.restaurantName"
-        :options="{ position: { lat: data.lat, lng: data.long } }"
+        v-if="data.name"
+        :key="data.name"
+        :options="{
+          position: {
+            lat: data.geometry.location.lat(),
+            lng: data.geometry.location.lng(),
+          }
+        }"
       />
       <Marker
         v-else
@@ -63,7 +68,7 @@ export default defineComponent({
     const route = useRoute();
     const router = useRouter();
     const { data } = toRefs(props);
-    console.log(data);
+    // console.log(data.name);
 
     store.dispatch('getLocation');
     const position = computed(() => store.state.position);
@@ -84,7 +89,7 @@ export default defineComponent({
 
     onMounted(() => {
       watch(() => mapRef.value.ready, (isReady) => {
-        console.log(mapRef.value);
+        // console.log(mapRef.value);
         if (!isReady) return;
         // store.commit('GET_RESTAURANTS_NEAR', mapRef);
         store.dispatch('getRestaurantsNear', mapRef);
@@ -92,18 +97,19 @@ export default defineComponent({
     });
 
     function mapCenter() {
-      console.log(mapRef.value.map.center.lat());
-      console.log(mapRef.value.map.center.lng());
+      store.dispatch('setLocation', {
+        lat: mapRef.value.map.center.lat(),
+        lng: mapRef.value.map.center.lng(),
+      });
     }
 
-    // TODO: Couleur spécifique pour le marqueur de la position utilisateur
     const markerOptions = computed(() => ({
       icon: {
         url: 'https://www.seekpng.com/png/full/18-180376_bluemapicon-blue-google-maps-marker.png',
         scaledSize: { width: 27, height: 43 },
-        labelOrigin: { x: 16, y: -10 },
+        // labelOrigin: { x: 16, y: -10 },
       },
-      position: position.value,
+      position: store.state.userPosition,
       title: 'Just Here',
     }));
 

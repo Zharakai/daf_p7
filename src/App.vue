@@ -82,7 +82,7 @@ export default {
         restaurant.reviews = matchingRestaurant.reviews;
         restaurant.geometry = matchingRestaurant.geometry;
         restaurant.rating = matchingRestaurant.rating;
-        // restaurant.user_ratings_total = matchingRestaurant.restaurant.user_ratings_total;
+        restaurant.user_ratings_total = matchingRestaurant.user_ratings_total;
       }
     }
 
