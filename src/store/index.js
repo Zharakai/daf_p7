@@ -41,7 +41,6 @@ export default createStore({
     },
 
     ADD_RATING(state, datas) {
-      // console.log(datas);
       const currentRestaurant = state.restaurantsList.find((restaurant) => {
         const findResult = restaurant.name === datas.currentRestaurant.name;
         return findResult;
@@ -51,25 +50,13 @@ export default createStore({
       const { rating } = currentRestaurant;
       const ratingTotal = userRatingsTotal * rating;
       const newRating = datas.rating.rating.value;
-      console.log(ratingTotal, newRating);
 
-      console.log(currentRestaurant.rating, currentRestaurant.user_ratings_total);
       currentRestaurant.reviews.push(datas.rating);
-
       currentRestaurant.user_ratings_total += 1;
 
       const newAverage = (ratingTotal + newRating) / currentRestaurant.user_ratings_total;
-      console.log(Math.round(newAverage));
-      console.log(datas);
-      currentRestaurant.rating = Math.round(newAverage);
-      /*
-      console.log(
-        currentRestaurant.rating,
-        currentRestaurant.user_ratings_total,
-        datas.rating.rating.value,
-      );
-      */
-      // currentRestaurant.average = getAverageRating(currentRestaurant.ratings);
+
+      currentRestaurant.rating = Math.round(newAverage * 10) / 10;
     },
 
     // UPDATE_AVERAGE()

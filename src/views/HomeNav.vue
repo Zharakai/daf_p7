@@ -70,6 +70,7 @@ export default {
     const minRate = ref(0);
     const maxRate = ref(5);
     const { data } = toRefs(props);
+    console.log(data);
 
     const logChange = (event, type) => {
       const eventData = { type, value: event.target.value };

@@ -74,8 +74,6 @@ export default defineComponent({
     store.dispatch('getLocation');
     const position = computed(() => store.state.position);
 
-    // store.dispatch('fetchRestaurants');
-
     function addNewRestaurant(event) {
       if (route.path === '/') {
         router.push({

@@ -55,14 +55,6 @@ export default {
       user_ratings_total: 0,
     });
 
-    // Watch when restaurants are stored
-    /*
-    watch(() => store.state.restaurantsList, () => {
-      const { restaurantsList } = store.state;
-      store.dispatch('getPlacesDetails', restaurantsList);
-    });
-    */
-
     function refreshData(id) {
       const restaurantsList = computed(() => store.state.restaurantsList);
 
@@ -143,7 +135,6 @@ body {
 #nav {
   width: 417px;
   overflow-y: scroll;
-  // overflow: auto;
   a {
     font-weight: bold;
     color: #2c3e50;

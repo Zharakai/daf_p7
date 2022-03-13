@@ -31,8 +31,8 @@ export default ({
   },
   setup() {
     const route = useRoute();
-    const { lat } = route.params; // ref
-    const { lng } = route.params; // ref
+    const { lat } = route.params;
+    const { lng } = route.params;
     const formattedAddress = ref('');
     const name = ref('');
 
