@@ -74,6 +74,12 @@ export default defineComponent({
     store.dispatch('getLocation');
     const position = computed(() => store.state.position);
 
+    /**
+     * @function addNewRestaurant Used to redirect the user to the page "AddRestaurant" with
+     * the coordinatesof the clicked point.
+     *
+     * @param {event} event event
+     */
     function addNewRestaurant(event) {
       if (route.path === '/') {
         router.push({
@@ -93,6 +99,10 @@ export default defineComponent({
       });
     });
 
+    /**
+     * @function mapCenter A function that is called when the user clicks on the button
+     * "Rechercher dans cette zone".
+     */
     function mapCenter() {
       store.dispatch('setLocation', {
         lat: mapRef.value.map.center.lat(),

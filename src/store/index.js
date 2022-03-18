@@ -48,7 +48,10 @@ export default createStore({
 
   actions: {
     /**
-     * Get the user's current location and store it in the store
+     * @function getLocation Get the user's current location and store it
+     *
+     * @param {object} commit commit
+     * @param {object} commit.commit commit
      */
     getLocation({ commit }) {
       navigator.geolocation.getCurrentPosition(
@@ -61,6 +64,7 @@ export default createStore({
           commit('SET_USER_POSITION', pos);
         },
         (error) => {
+          // eslint-disable-next-line no-console
           console.log(error.message);
         },
       );
@@ -72,9 +76,12 @@ export default createStore({
     },
 
     /**
-     * If the restaurant does not exist in the list, add it to the list
-     * @param newRestaurant - The new restaurant object that we want to add to the restaurantsList
-     * array.
+     * @function addRestaurant If the restaurant does not exist in the list, add it to the list
+     *
+     * @param {object} newRestaurant The new restaurant object that we want to addto
+     * the restaurantsList array.
+     * @param {object} newRestaurant.commit commit
+     * @param {object} newRestaurant.state state
      */
     addRestaurant({ commit, state }, newRestaurant) {
       // eslint-disable-next-line max-len

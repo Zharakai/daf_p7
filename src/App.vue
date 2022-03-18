@@ -55,6 +55,13 @@ export default {
       user_ratings_total: 0,
     });
 
+    /**
+     * @function refreshData Updates the data that is being displayed in the HomeMap component.
+     * If there is no id, we get all restaurants
+     * else if there is an id, we check a particular restaurant
+     *
+     * @param {string} id Name of the restaurant
+     */
     function refreshData(id) {
       const restaurantsList = computed(() => store.state.restaurantsList);
 
@@ -91,6 +98,11 @@ export default {
       refreshData(route.params.id);
     });
 
+    /**
+     * @function addNewRating Adding a new rating to the restaurant.
+     *
+     * @param {number} rating Rating of the restaurant
+     */
     function addNewRating(rating) {
       const currentRestaurant = data.value;
 
@@ -106,6 +118,11 @@ export default {
 
     EventBus.on('submitReview', addNewRating);
 
+    /**
+     * @function addNewRestaurant Adding a new restaurant to the list of restaurants.
+     *
+     * @param {object} restaurantObject Informations of the restaurant
+     */
     function addNewRestaurant(restaurantObject) {
       store.dispatch('addRestaurant', restaurantObject);
       router.push({ name: 'Home' });

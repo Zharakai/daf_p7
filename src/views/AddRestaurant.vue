@@ -37,12 +37,17 @@ export default ({
     const name = ref('');
     const userRatingsRotal = ref(0);
 
+    /**
+     * @function fetchAddress It's fetching the latitude and longitude from the Google Maps API
+     * to get informations about the formatted address.
+     */
     async function fetchAddress() {
       try {
         const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=AIzaSyAQvcg7ps3Ca2wFlXQnHIFKbRgWwgOwRvU`);
         const jsonResponse = await response.json();
         formattedAddress.value = jsonResponse.results[0].formatted_address;
       } catch (error) {
+        // eslint-disable-next-line no-console
         console.error(error);
       }
     }
