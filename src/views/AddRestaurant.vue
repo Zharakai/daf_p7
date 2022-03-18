@@ -35,6 +35,7 @@ export default ({
     const { lng } = route.params;
     const formattedAddress = ref('');
     const name = ref('');
+    const userRatingsRotal = ref(0);
 
     async function fetchAddress() {
       try {
@@ -60,6 +61,7 @@ export default ({
         },
         reviews: [],
         rating: 0,
+        user_ratings_total: userRatingsRotal,
       };
       EventBus.emit('submitNewRestaurant', restaurantObject);
     };

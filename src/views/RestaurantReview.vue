@@ -37,10 +37,10 @@ export default ({
           rating,
           text,
         };
-        console.log(data);
         data.value.user_ratings_total += 1;
         EventBus.emit('submitReview', review);
       } else {
+        // eslint-disable-next-line no-alert
         alert('Merci de remplir les champs');
       }
     };

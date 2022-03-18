@@ -2,18 +2,6 @@ import { createStore } from 'vuex';
 
 let gAPI;
 
-/*
-function getAverageRating(ratings) {
-  if (ratings.length === 0) {
-    return false;
-  }
-  // Create an array for each restaurant with their ratings
-  const flatRatings = ratings.map((rating) => rating.stars);
-  // Take each array previously created to return the average with one decimal
-  return Math.round((flatRatings.reduce((a, b) => a + b) / ratings.length) * 10) / 10;
-}
-*/
-
 export default createStore({
   state() {
     return {
@@ -34,9 +22,7 @@ export default createStore({
     },
 
     ADD_RESTAURANT(state, newRestaurant) {
-      // console.log(newRestaurant);
       // eslint-disable-next-line no-param-reassign
-      // newRestaurant.average = getAverageRating(newRestaurant.ratings);
       state.restaurantsList.push(newRestaurant);
     },
 
@@ -58,8 +44,6 @@ export default createStore({
 
       currentRestaurant.rating = Math.round(newAverage * 10) / 10;
     },
-
-    // UPDATE_AVERAGE()
   },
 
   actions: {
@@ -100,8 +84,6 @@ export default createStore({
       }
     },
 
-    // addRating()
-
     getRestaurantsNear({ state, commit }, mapRef) {
       if (state.PlacesService === undefined) {
         gAPI = mapRef.value.api;
@@ -135,6 +117,7 @@ export default createStore({
                 if (statusDetails === gAPI.places.PlacesServiceStatus.OK) {
                   commit('ADD_RESTAURANT', place);
                 } else {
+                  // eslint-disable-next-line no-console
                   console.log(status);
                 }
               });

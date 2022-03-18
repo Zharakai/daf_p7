@@ -32,7 +32,6 @@ export default ({
   },
   setup(props) {
     const { data } = toRefs(props);
-    console.log(data);
 
     return { restaurant: data };
   },
