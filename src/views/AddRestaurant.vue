@@ -83,15 +83,20 @@ export default ({
 </script>
 
 <style lang="scss">
+/* stylelint-disable-next-line selector-class-pattern */
 .addRestaurant {
   width: 417px;
   overflow-y: scroll;
+
   .back {
     display: flex;
   }
+
+  /* stylelint-disable-next-line selector-class-pattern */
   .addRestaurantContainer {
     padding: 0 5%;
   }
+
   form {
     display: flex;
     justify-content: center;

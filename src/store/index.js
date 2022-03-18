@@ -50,8 +50,8 @@ export default createStore({
     /**
      * @function getLocation Get the user's current location and store it
      *
-     * @param {object} commit commit
-     * @param {object} commit.commit commit
+     * @param {object} context - Vuex instance.
+     * @param {Function} context.commit - Vuex commit.
      */
     getLocation({ commit }) {
       navigator.geolocation.getCurrentPosition(
@@ -70,6 +70,8 @@ export default createStore({
       );
     },
 
+    /* This is a function that is called when the user clicks on the map.
+    It sets the user's current location and then calls the `getRestaurantsNear` function. */
     setLocation({ commit, dispatch }, { lat, lng }) {
       commit('SET_POSITION', { lat, lng });
       dispatch('getRestaurantsNear');
@@ -78,10 +80,10 @@ export default createStore({
     /**
      * @function addRestaurant If the restaurant does not exist in the list, add it to the list
      *
-     * @param {object} newRestaurant The new restaurant object that we want to addto
+     * @param {object} newRestaurant - The new restaurant object that we want to addto
      * the restaurantsList array.
-     * @param {object} newRestaurant.commit commit
-     * @param {object} newRestaurant.state state
+     * @param {object} newRestaurant.commit - Commit.
+     * @param {object} newRestaurant.state - State.
      */
     addRestaurant({ commit, state }, newRestaurant) {
       // eslint-disable-next-line max-len

@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import HomeNav from '../views/HomeNav.vue';
-import Restaurant from '../views/Restaurant.vue';
+import Restaurant from '../views/RestaurantCard.vue';
 import RestaurantReview from '../views/RestaurantReview.vue';
 import AddRestaurant from '../views/AddRestaurant.vue';
 

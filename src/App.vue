@@ -14,8 +14,8 @@ import {
 } from 'vue';
 import { useStore } from 'vuex';
 import { useRoute, useRouter } from 'vue-router';
-import HomeMap from './views/HomeMap.vue';
 import EventBus from '@/EventBus';
+import HomeMap from './views/HomeMap.vue';
 
 const minRate = ref(0);
 const maxRate = ref(5);
@@ -141,6 +141,7 @@ export default {
 body {
   margin: 0;
 }
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -149,41 +150,54 @@ body {
   color: #2c3e50;
   height: 100vh;
 }
+
 #nav {
   width: 417px;
   overflow-y: scroll;
+
   a {
     font-weight: bold;
     color: #2c3e50;
+
     &.router-link-exact-active {
       color: #42b983;
     }
   }
+
   ul {
     padding: 0;
   }
+
   li {
     list-style: none;
+
     &:hover {
         background: #9ea93f1f
       }
+
     a {
       text-decoration: none;
       font-weight: normal;
+
       div {
         padding: 5px;
       }
     }
+
     p {
       text-align: left;
     }
   }
+
+  /* stylelint-disable-next-line selector-class-pattern */
   .restaurantsNav {
-    margin: 16px 0 0 0;
-    font-family: 'Roboto', sans-serif;
+    margin: 16px 0 0 ;
+    font-family: Roboto, sans-serif;
+
     select {
       margin: 0 0 0 5px;
     }
+
     ul {
       i {
         margin: 0 5px 0 0;
@@ -191,17 +205,21 @@ body {
       }
     }
   }
+
   .hidden {
     display: none;
   }
+
   .visible {
     display: block;
   }
 }
+
 main {
   display: flex;
   height: 100%;
 }
+
 .home {
   width: calc(100vw - 417px);
 }

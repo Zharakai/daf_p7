@@ -56,20 +56,26 @@ export default ({
 </script>
 
 <style lang="scss">
+/* stylelint-disable-next-line selector-class-pattern */
 .restaurantReview {
   width: 417px;
   overflow-y: scroll;
+
   .back {
     display: flex;
   }
+
+  /* stylelint-disable-next-line selector-class-pattern */
   .containerReview {
     padding: 0 5%;
   }
+
   form {
     display: flex;
     justify-content: center;
     align-content: center;
     flex-direction: column;
+
     textarea {
       resize: vertical;
       max-height: 40vh;

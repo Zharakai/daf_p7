@@ -87,7 +87,9 @@ export default {
 </script>
 
 <style lang="scss">
+/* stylelint-disable-next-line selector-class-pattern */
 .homeNav {
+  /* stylelint-disable-next-line selector-class-pattern */
   .headerLogo {
   display: flex;
   flex-direction: row-reverse;
@@ -98,20 +100,28 @@ export default {
   font-family: 'Luckiest Guy', cursive;
   font-size: 18px;
   }
+
+  /* stylelint-disable-next-line selector-class-pattern */
   .restaurantsFilter {
     display: flex;
     align-items: center;
     justify-content: center;
+
     label {
       margin: 0 1% 0 0;
     }
+
     input {
     width: 40px;
     }
+
+    /* stylelint-disable-next-line selector-class-pattern */
     .inputMin {
       margin: 0 1% 0 0;
     }
   }
+
+  /* stylelint-disable-next-line selector-class-pattern */
   .userRatingsTotal {
     color: #6f6f6f;
     font-size: 0.8em;

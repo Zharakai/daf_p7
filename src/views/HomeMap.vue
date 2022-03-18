@@ -132,10 +132,11 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
+/* stylelint-disable-next-line selector-class-pattern */
 .findInAreaBtn {
   position: absolute;
   top: 10px;
-  background-color: rgb(255, 255, 255);
+  background-color: rgb(255 255 255);
   border: none;
   height: 40px;
   padding: 0 17px;
@@ -143,8 +144,9 @@ export default defineComponent({
   font-size: 14px;
   cursor: pointer;
   font-family: Roboto, Arial, sans-serif;
+
   &:hover {
-    background-color: rgb(235, 235, 235);
+    background-color: rgb(235 235 235);
   }
 }
 </style>
