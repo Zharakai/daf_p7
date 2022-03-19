@@ -25,6 +25,7 @@
 
 <script>
 import { toRefs } from 'vue';
+// import { watchEffect } from 'vue';
 
 export default ({
   props: {
@@ -32,7 +33,14 @@ export default ({
   },
   setup(props) {
     const { data } = toRefs(props);
-
+    /*
+    let data;
+    watchEffect(() => {
+      console.log(props);
+      data = props.data;
+    });
+    console.log(data);
+    */
     return { restaurant: data };
   },
 });

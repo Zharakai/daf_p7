@@ -70,6 +70,8 @@ export default defineComponent({
     const route = useRoute();
     const router = useRouter();
     const { data } = toRefs(props);
+    console.log(data);
+    // const data = toRefs({});
 
     store.dispatch('getLocation');
     const position = computed(() => store.state.position);
@@ -78,7 +80,7 @@ export default defineComponent({
      * @function addNewRestaurant Used to redirect the user to the page "AddRestaurant" with
      * the coordinatesof the clicked point.
      *
-     * @param {event} event event
+     * @param {event} event - Event.
      */
     function addNewRestaurant(event) {
       if (route.path === '/') {

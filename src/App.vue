@@ -11,6 +11,7 @@ import {
   computed,
   watch,
   reactive,
+  /* toRefs, */
 } from 'vue';
 import { useStore } from 'vuex';
 import { useRoute, useRouter } from 'vue-router';
@@ -84,12 +85,22 @@ export default {
         restaurant.user_ratings_total = matchingRestaurant.user_ratings_total;
       }
     }
+    /*
+    const state = reactive({
+      data:
+      computed(() => {
+        if (route.params.id) {
+          return restaurant;
+        }
+        return restaurantsFiltered;
+      }),
+    }); */
 
     const data = computed(() => {
       if (route.params.id) {
         return restaurant;
       }
-      return restaurantsFiltered;
+      return restaurantsFiltered.value;
     });
 
     refreshData(route.params.id);
@@ -132,6 +143,7 @@ export default {
 
     return {
       data,
+      // ...toRefs(state),
     };
   },
 };
