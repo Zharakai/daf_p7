@@ -26,7 +26,7 @@ module.exports = {
     'jsdoc/require-param-type': 1,
     'jsdoc/require-returns-description': 1,
     'jsdoc/require-returns-type': 1,
-    'jsdoc/require-jsdoc': ['warn', {
+    'jsdoc/require-jsdoc': ['off', {
       publicOnly: false,
       require: {
         ArrowFunctionExpression: true,

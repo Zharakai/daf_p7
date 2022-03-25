@@ -70,8 +70,6 @@ export default defineComponent({
     const route = useRoute();
     const router = useRouter();
     const { data } = toRefs(props);
-    console.log(data);
-    // const data = toRefs({});
 
     store.dispatch('getLocation');
     const position = computed(() => store.state.position);

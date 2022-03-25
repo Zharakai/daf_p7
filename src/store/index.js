@@ -1,6 +1,6 @@
 import { createStore } from 'vuex';
 
-let gAPI;
+let gAPI; // Google API
 
 export default createStore({
   state() {
@@ -48,7 +48,7 @@ export default createStore({
 
   actions: {
     /**
-     * @function getLocation Get the user's current location and store it
+     * @function getLocation - Get the user's current location and store it.
      *
      * @param {object} context - Vuex instance.
      * @param {Function} context.commit - Vuex commit.
@@ -70,20 +70,27 @@ export default createStore({
       );
     },
 
-    /* This is a function that is called when the user clicks on the map.
-    It sets the user's current location and then calls the `getRestaurantsNear` function. */
+    /**
+     * @function setLocation - This is a function that is called when the user clicks on the map.
+     * It sets the user's current location and then calls the `getRestaurantsNear` function.
+     *
+     * @param {object} context - Vuex instance.
+     * @param {Function} context.commit - Vuex commit function.
+     * @param {Function} context.dispatch - Vuex dispatch function.
+     */
     setLocation({ commit, dispatch }, { lat, lng }) {
       commit('SET_POSITION', { lat, lng });
       dispatch('getRestaurantsNear');
     },
 
     /**
-     * @function addRestaurant If the restaurant does not exist in the list, add it to the list
+     * @function addRestaurant - If the restaurant does not exist in the list, add it to the list.
      *
+     * @param {object} context - Vuex instance.
+     * @param {Function} context.commit - Vuex commit.
+     * @param {Function} context.state - Vuex state.
      * @param {object} newRestaurant - The new restaurant object that we want to addto
      * the restaurantsList array.
-     * @param {object} newRestaurant.commit - Commit.
-     * @param {object} newRestaurant.state - State.
      */
     addRestaurant({ commit, state }, newRestaurant) {
       // eslint-disable-next-line max-len
@@ -93,6 +100,14 @@ export default createStore({
       }
     },
 
+    /**
+     * @function getRestaurantsNear - Get the restaurants near the user's current location.
+     *
+     * @param {object} context - Vuex instance.
+     * @param {Function} context.commit - Vuex commit.
+     * @param {Function} context.state - Vuex state.
+     * @param {object} mapRef - The map reference with Google API.
+     */
     getRestaurantsNear({ state, commit }, mapRef) {
       if (state.PlacesService === undefined) {
         gAPI = mapRef.value.api;

@@ -71,6 +71,15 @@ export default {
     const maxRate = ref(5);
     const { data } = toRefs(props);
 
+    EventBus.emit('updateFilter', { type: 'min', value: 0 });
+    EventBus.emit('updateFilter', { type: 'max', value: 5 });
+
+    /**
+     * @function logChange - A function that is called when the user changes the value of the input.
+     *
+     * @param {object} event - Event.
+     * @param {string} type - Min or max.
+     */
     const logChange = (event, type) => {
       const eventData = { type, value: event.target.value };
       EventBus.emit('updateFilter', eventData);

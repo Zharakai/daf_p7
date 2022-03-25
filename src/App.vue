@@ -11,7 +11,6 @@ import {
   computed,
   watch,
   reactive,
-  /* toRefs, */
 } from 'vue';
 import { useStore } from 'vuex';
 import { useRoute, useRouter } from 'vue-router';
@@ -25,9 +24,9 @@ const maxRate = ref(5);
  * @function updateMinMax Is called when the user changes the min or max rate.
  * It updates minRate and maxRate.
  *
- * @param {object} settings details of update
- * @param {('min'|'max')} settings.type type of update
- * @param {number} settings.value new value
+ * @param {object} settings - Details of update.
+ * @param {('min'|'max')} settings.type - Type of update.
+ * @param {number} settings.value - New value.
  *
  * @returns {void}
  */
@@ -61,7 +60,7 @@ export default {
      * If there is no id, we get all restaurants
      * else if there is an id, we check a particular restaurant
      *
-     * @param {string} id Name of the restaurant
+     * @param {string} id - Name of the restaurant.
      */
     function refreshData(id) {
       const restaurantsList = computed(() => store.state.restaurantsList);
@@ -85,16 +84,6 @@ export default {
         restaurant.user_ratings_total = matchingRestaurant.user_ratings_total;
       }
     }
-    /*
-    const state = reactive({
-      data:
-      computed(() => {
-        if (route.params.id) {
-          return restaurant;
-        }
-        return restaurantsFiltered;
-      }),
-    }); */
 
     const data = computed(() => {
       if (route.params.id) {
@@ -112,7 +101,7 @@ export default {
     /**
      * @function addNewRating Adding a new rating to the restaurant.
      *
-     * @param {number} rating Rating of the restaurant
+     * @param {number} rating - Rating of the restaurant.
      */
     function addNewRating(rating) {
       const currentRestaurant = data.value;
@@ -132,7 +121,7 @@ export default {
     /**
      * @function addNewRestaurant Adding a new restaurant to the list of restaurants.
      *
-     * @param {object} restaurantObject Informations of the restaurant
+     * @param {object} restaurantObject - Informations of the restaurant.
      */
     function addNewRestaurant(restaurantObject) {
       store.dispatch('addRestaurant', restaurantObject);
@@ -143,7 +132,6 @@ export default {
 
     return {
       data,
-      // ...toRefs(state),
     };
   },
 };
